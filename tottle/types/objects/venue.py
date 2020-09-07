@@ -1,7 +1,8 @@
-from pydantic import BaseModel
 from typing import Optional
 
-from tottle.types.objects.location import Location
+from pydantic import BaseModel
+
+from ..objects.location import Location
 
 
 class Venue(BaseModel):

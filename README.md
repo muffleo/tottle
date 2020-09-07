@@ -9,10 +9,12 @@
 ## About
 Tottle is a _fast_, _convenient_ and _extensible_ library for working with the Telegram API. **Still in development.**
 ### Plan to add
-- LP and Callback updates listening methods
+- FSM
 - Generating (keyboard etc.)
 ### In progress/completed
+- HTTP client
 - API and its object types (almost completed)
-- HTTP client (now as a draft)
+- LP and Callback updates listening methods (now as a draft)
+
 ## Contributing
 You can contribute to the library at any time convenient for you! We are always glad to see your support!

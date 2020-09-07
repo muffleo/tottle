@@ -1,7 +1,8 @@
-from pydantic import BaseModel
 from typing import Optional
 
-from tottle.types.objects.order import OrderInfo
+from pydantic import BaseModel
+
+from ..objects.order import OrderInfo
 
 
 class SuccessfulPayment(BaseModel):

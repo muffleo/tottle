@@ -1,7 +1,8 @@
-from pydantic import BaseModel
 from typing import Optional
 
-from tottle.types.objects.photo import PhotoSize
+from pydantic import BaseModel
+
+from ..objects.photo import PhotoSize
 
 
 class Audio(BaseModel):

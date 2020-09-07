@@ -1,8 +1,9 @@
-from pydantic import BaseModel
 from typing import Optional
 
-from tottle.types.objects.mask import MaskPosition
-from tottle.types.objects.photo import PhotoSize
+from pydantic import BaseModel
+
+from ..objects.mask import MaskPosition
+from ..objects.photo import PhotoSize
 
 
 class Sticker(BaseModel):

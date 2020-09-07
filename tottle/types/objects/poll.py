@@ -1,7 +1,8 @@
-from pydantic import BaseModel
 from typing import Optional, List
 
-from tottle.types.objects.message import MessageEntity
+from pydantic import BaseModel
+
+from ..objects.entity import Entity
 
 
 class PollOption(BaseModel):
@@ -20,7 +21,7 @@ class Poll(BaseModel):
     allows_multiple_answers: bool
     correct_option_id: Optional[int] = 0
     explanation: Optional[str] = ""
-    explanation_entities: Optional[List[MessageEntity]] = []
+    explanation_entities: Optional[List[Entity]] = []
     open_period: Optional[int] = 0
     close_date: Optional[int] = 0
 
