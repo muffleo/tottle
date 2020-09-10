@@ -26,7 +26,12 @@ class API(ABCAPI, APICategories):
             self,
             method: str,
             data: typing.Optional[dict] = None,
-    ) -> typing.Union[dict, None]:
+    ) -> typing.Optional[
+        typing.Union[
+            typing.List[dict],
+            dict,
+        ]
+    ]:
         async with self.http as session:
             response = await session.request_json(
                 "POST", url=self.request_url + method,
@@ -35,7 +40,8 @@ class API(ABCAPI, APICategories):
 
             if not response.get("ok"):
                 raise TelegramError(
-                    "Request to API with method {} and params {} failed: {description} ({error_code})".format(
+                    "Request to API with method {} and params {} failed: "
+                    "{description} ({error_code})".format(
                         method, data, **response
                     )
                 )

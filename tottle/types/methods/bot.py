@@ -1,7 +1,7 @@
 import typing
 
 from .base import Base
-from ..objects import chat, keyboard, user
+from ..responses import chat, keyboard, user
 
 
 class BotCategory(Base):

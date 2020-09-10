@@ -5,6 +5,8 @@ import typing
 from loguru import logger
 
 from tottle.api import API
+from tottle.polling.labelers.bot import BotLabeler
+from tottle.polling.polling import Polling
 from tottle.utils.logger import LoggerLevel
 
 try:
@@ -23,47 +25,35 @@ class Bot:
         self.token = token
         self.api: "API" = API(self.token)
 
-        self.polling_stopped: bool = True
+        self.on: "BotLabeler" = BotLabeler()
+        self.polling: "Polling" = Polling(self.api)
         self.loop = loop or asyncio.get_event_loop()
 
         if uvloop is not None:
             asyncio.set_event_loop_policy(uvloop.EventLoopPolicy())
 
-        self._setup_logger(logging_level)
-
-    def run_polling(self):
-        logger.warning("Polling will be started.. But is it OK?")
-        self.loop.run_until_complete(self.run())
-
-    async def run(self):
-        offset = 0
-        self.polling_stopped = False
-
-        while not self.polling_stopped:
-            updates = await self.api.request(
-                "getUpdates", {
-                    "offset": offset
-                }
-            )
-
-            if updates:
-                logger.debug(updates)
-                offset = updates[-1]["update_id"] + 1
-
-    def _setup_logger(self, level: str):
         logger.remove()
         logger.add(
             level=0,
-            enqueue=False,
+            enqueue=True,
             sink=sys.stdout,
-            format="<level><magenta>/ Tottle /</magenta> {message}</level>"
-                   " [at <blue><bold>{time:HH:MM:ss}</bold></blue>]",
+            format="<level>/ Tottle / {message}</level>"
+                   " [at <light-blue><bold>{time:HH:MM:ss}</bold></light-blue>]",
             colorize=True,
-            filter=LoggerLevel(level),
+            filter=LoggerLevel(logging_level),
         )
 
-        logger.level("INFO", color="<white>")
+        logger.level("INFO", color="<blue>")
         logger.level("SUCCESS", color="<green>")
         logger.level("WARNING", color="<yellow>")
         logger.level("ERROR", color="<red>")
-        logger.level("DEBUG", color="<light-cyan>")
+        logger.level("DEBUG", color="<white>")
+
+    def run_polling(self):
+        logger.info("Polling will be started. Is it ok?")
+
+        try:
+            self.loop.create_task(self.polling.run())
+            self.loop.run_forever()
+        except KeyboardInterrupt:
+            logger.warning("Keyboard interrupt...")
