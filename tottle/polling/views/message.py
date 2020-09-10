@@ -34,7 +34,7 @@ class MessageView(ABCView):
             )
 
             logger.success(
-                "Message \"{}\" is processed successfully!",
+                "Message \"{}\" was processed successfully!",
                 event.message.text.replace(
                     "\n", " "
                 )
