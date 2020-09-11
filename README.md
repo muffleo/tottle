@@ -33,6 +33,8 @@ async def message_handler(message: Message, thing):
         text=f"It's great that you love {thing}", 
         chat_id=message.chat.id,
     )
+
+bot.run_polling()
 ```
 You can find more examples in the [examples](./examples) directory.
 
