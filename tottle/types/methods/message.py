@@ -1,18 +1,10 @@
 import typing
 
 from .base import Base
-from ..responses import chat, keyboard, user
+from ..responses import chat, keyboard
 
 
-class BotCategory(Base):
-    async def get_me(self, **kwargs) -> user.User:
-        params = self.get_set_params(locals())
-        return user.User(
-            **await self.api.request(
-                "getMe", params
-            )
-        )
-
+class MessageCategory(Base):
     async def send_message(
             self,
             text: str,

@@ -14,3 +14,10 @@ class EventType:
 
     POLL = "poll"
     POLL_ANSWER = "poll_answer"
+
+
+class ChatType:
+    PRIVATE = "private"
+    CHANNEL = "channel"
+    GROUP = "group"
+    SUPERGROUP = "supergroup"

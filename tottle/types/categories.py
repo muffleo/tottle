@@ -9,8 +9,12 @@ if typing.TYPE_CHECKING:
 
 class APICategories(ABC):
     @property
-    def bot(self) -> bot.BotCategory:
-        return bot.BotCategory(self.instance)
+    def messages(self) -> message.MessageCategory:
+        return message.MessageCategory(self.instance)
+
+    @property
+    def users(self) -> user.UserCategory:
+        return user.UserCategory(self.instance)
 
     @property
     @abstractmethod

@@ -5,7 +5,7 @@ with open("requirements.txt", "r") as f:
 
 setuptools.setup(
     name="tottle",
-    version="0.1.0",
+    version="0.2.1",
     author="muffle",
     description="Fast async Telegram API wrapper built by community",
     url="https://github.com/muffleo/tottle",

@@ -7,7 +7,7 @@ api = API(os.environ["TELEGRAM_TOKEN"])
 
 
 async def main():
-    user = await api.bot.get_me()  # Make request to Telegram API..
+    user = await api.users.get_me()  # Make request to Telegram API..
     print(user)  # ..and print the result
 
 
