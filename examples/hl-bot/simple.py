@@ -15,7 +15,7 @@ async def _(message: Message):
     :return:
     """
     await bot.api.messages.send_message(
-        text="Hi!", chat_id=message.chat.id
+        text="Hi!", chat_id=message.chat.id,
     )
 
 

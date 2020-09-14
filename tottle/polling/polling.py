@@ -21,15 +21,17 @@ class Polling:
 
         return raw_updates
 
-    async def listen(self) -> typing.AsyncIterator[Update]:
+    async def listen(self) -> typing.AsyncIterator[dict]:
         while not self.stop:
             updates = await self.get_raw_updates()
 
             for update in updates:
                 self.offset = updates[-1]["update_id"] + 1
-                yield Update(**update)
+                yield update
 
     async def run(self) -> typing.NoReturn:
         async for update in self.listen():
-            logger.debug("New event — {}", update)
-            await self.router.route(update, self.api)
+            event = Update(**update)
+
+            logger.debug("New event — {}", event)
+            await self.router.route(event, self.api)
