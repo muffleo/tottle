@@ -61,10 +61,17 @@ class Bot:
         logger.level("ERROR", color="<red>")
         logger.level("DEBUG", color="<white>")
 
-    def run_polling(self, on_startup: Callable = None):
+    def run_polling(
+            self,
+            on_startup: Optional[Callable] = None,
+            on_shutdown: Optional[Callable] = None,
+    ):
         logger.info("Polling will be started")
 
-        manager = TaskManager(self.loop)
+        manager = TaskManager(
+            self.loop,
+            on_startup=on_startup,
+            on_shutdown=on_shutdown,
+        )
         manager.add_task(self.polling.run())
-        manager.add_task(on_startup) if on_startup else None
         manager.run()
