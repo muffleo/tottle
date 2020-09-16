@@ -1,6 +1,7 @@
 import json
+
 from asyncio import AbstractEventLoop, get_event_loop
-from typing import Optional, Awaitable, Union, Callable
+from typing import Optional
 
 from tottle.http import AiohttpClient
 from tottle.const import __version__, VERSION_SOURCE
