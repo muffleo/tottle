@@ -1,5 +1,5 @@
-import asyncio
 import os
+import asyncio
 
 from tottle import API
 
@@ -11,4 +11,4 @@ async def main():
     print(user)  # ..and print the response
 
 
-asyncio.get_event_loop().run_until_complete(main())
+asyncio.run(main())
