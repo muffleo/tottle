@@ -2,7 +2,7 @@ import typing
 from abc import ABC, abstractmethod
 
 from tottle import API
-from tottle.polling.handlers.abc import ABCHandler
+from tottle.dispatch.handlers import ABCHandler
 from tottle.types.responses.update import Update
 
 

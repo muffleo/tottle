@@ -23,7 +23,7 @@
 In this example, the bot reacts to messages with the pattern "i love &lt;thing&gt;" and passes the validation result as an argument to the handler (thanks to [vbml](https://github.com/tesseradecade/vbml), it is really easy):
 ```python
 from tottle import Bot, Message
-from tottle.polling.rules import TextRule
+from tottle.logic.rules import TextRule
 
 bot = Bot("token-here")
 

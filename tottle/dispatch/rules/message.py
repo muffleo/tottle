@@ -4,8 +4,8 @@ from typing import Union, List
 
 import vbml
 
-from tottle.polling.rules import ABCRule
-from tottle.types.responses.update import Update
+from tottle.types.mini import MessageMini
+from tottle.dispatch.rules import ABCRule
 from tottle.utils.enums import ChatType
 
 VBML_PATCHER = vbml.Patcher()
@@ -13,13 +13,18 @@ VBML_PATCHER = vbml.Patcher()
 
 class ABCMessageRule(ABCRule):
     @abstractmethod
-    async def check(self, event: Update) -> bool:
+    async def check(self, message: MessageMini) -> bool:
         pass
 
 
 class FromChatRule(ABCMessageRule):
-    async def check(self, event: Update) -> bool:
-        return event.message.chat.type in (ChatType.GROUP, ChatType.SUPERGROUP)
+    async def check(self, message: MessageMini) -> bool:
+        return message.chat.type in (ChatType.GROUP, ChatType.SUPERGROUP)
+
+
+class PrivateMessageRule(ABCMessageRule):
+    async def check(self, message: MessageMini) -> bool:
+        return message.chat.type == ChatType.PRIVATE
 
 
 class TextRule(ABCMessageRule):
@@ -40,10 +45,10 @@ class TextRule(ABCMessageRule):
             ]
         self.patterns = pattern
 
-    async def check(self, event: Update) -> Union[dict, bool]:
+    async def check(self, message: MessageMini) -> Union[dict, bool]:
         for pattern in self.patterns:
             result = VBML_PATCHER.check(
-                pattern, event.message.text
+                pattern, message.text
             )
 
             if isinstance(result, dict):

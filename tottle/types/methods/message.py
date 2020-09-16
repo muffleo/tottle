@@ -1,7 +1,7 @@
 import typing
 
 from .base import Base
-from ..responses import chat, keyboard
+from ..responses import chat
 
 
 class MessageCategory(Base):
@@ -13,12 +13,7 @@ class MessageCategory(Base):
             disable_web_page_preview: typing.Optional[bool] = None,
             disable_notification: typing.Optional[bool] = None,
             reply_to_message_id: typing.Optional[int] = None,
-            reply_markup: typing.Optional[
-                typing.Union[
-                    keyboard.ReplyKeyboardMarkup,
-                    keyboard.InlineKeyboardButton,
-                ]
-            ] = None,
+            reply_markup: typing.Optional[dict] = None,
             **kwargs
     ) -> chat.Message:
         params = self.get_set_params(locals())

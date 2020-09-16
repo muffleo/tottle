@@ -2,11 +2,10 @@ from abc import ABC, abstractmethod
 from typing import Callable, Any, Dict, Optional, Type, List
 
 from vbml import Patcher
-
-from tottle.types.responses.chat import Message
 from ..rules import ABCRule
+from ...types.mini import MessageMini
 
-LabeledMessageHandler = Callable[..., Callable[[Message], Any]]
+LabeledMessageHandler = Callable[..., Callable[[MessageMini], Any]]
 
 
 class ABCBotLabeler(ABC):
@@ -19,7 +18,21 @@ class ABCBotLabeler(ABC):
         self.custom_rules = custom_rules or {}
 
     @abstractmethod
-    def message(self, *rules: "ABCRule", **custom_rules) -> LabeledMessageHandler:
+    def message(
+            self, *rules: "ABCRule", **custom_rules
+    ) -> LabeledMessageHandler:
+        pass
+
+    @abstractmethod
+    def chat_message(
+            self, *rules: "ABCRule", **custom_rules
+    ) -> LabeledMessageHandler:
+        pass
+
+    @abstractmethod
+    def private_message(
+            self, *rules: "ABCRule", **custom_rules
+    ) -> LabeledMessageHandler:
         pass
 
     def get_custom_rules(self, custom_rules: Dict[str, Any]) -> List["ABCRule"]:

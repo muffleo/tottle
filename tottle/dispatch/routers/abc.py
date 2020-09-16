@@ -6,18 +6,18 @@ from ..views import ABCView
 
 
 class ABCRouter(ABC):
-    trees: typing.Dict[str, "ABCView"]
+    views: typing.Dict[str, "ABCView"]
 
     @abstractmethod
     async def route(self, event: dict, api: "ABCAPI") -> typing.Any:
         pass
 
     def add_view(self, name: str, tree: "ABCView") -> typing.NoReturn:
-        self.trees[name] = tree
+        self.views[name] = tree
 
-    def tree(self, name: str) -> typing.Callable[..., typing.Type["ABCView"]]:
-        def decorator(tree: typing.Type["ABCView"]):
-            self.add_view(name, tree())
-            return tree
+    def view(self, name: str) -> typing.Callable[..., typing.Type["ABCView"]]:
+        def decorator(view: typing.Type["ABCView"]):
+            self.add_view(name, view())
+            return view
 
         return decorator

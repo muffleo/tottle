@@ -3,10 +3,13 @@ import setuptools
 with open("requirements.txt", "r") as f:
     requirements = f.read().splitlines()
 
+with open("tottle/const.py", "r") as f:
+    exec(f.read())
+
 setuptools.setup(
     name="tottle",
-    version="0.2.1",
-    author="muffle",
+    version=locals()["__version__"],
+    author=locals()["__author__"],
     description="Fast async Telegram API wrapper built by community",
     url="https://github.com/muffleo/tottle",
     packages=setuptools.find_packages(),

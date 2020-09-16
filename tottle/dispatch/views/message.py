@@ -1,26 +1,25 @@
 import typing
 
 from tottle.api import API
-from tottle.types.responses.update import Update
 from tottle.utils.enums import EventType
 from tottle.utils.logger import logger
 from ..handlers import ABCHandler
 from ..views.abc import ABCView
+from ...types.mini import message_min
 
 
 class MessageView(ABCView):
     handlers: typing.List["ABCHandler"] = []
 
-    async def processor(self, event: Update) -> bool:
-        if event.dict().get(EventType.MESSAGE):
-            return True
+    async def processor(self, event: dict) -> bool:
+        return bool(event.get(EventType.MESSAGE))
 
-    async def handler(self, event: Update, api: API) -> typing.Any:
+    async def handler(self, event: dict, api: API) -> typing.Any:
+        message = message_min(event, api)
 
         handle_responses = []
-
         for handler in self.handlers:
-            result = await handler.filter(event)
+            result = await handler.filter(message)
 
             if result is False:
                 continue
@@ -29,13 +28,13 @@ class MessageView(ABCView):
 
             handle_responses.append(
                 await handler.process(
-                    event.message, **result
+                    message, **result
                 )
             )
 
             logger.success(
                 "Message \"{}\" was processed successfully!",
-                event.message.text.replace(
+                message.text.replace(
                     "\n", " "
                 )
             )

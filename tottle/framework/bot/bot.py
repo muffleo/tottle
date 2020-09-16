@@ -1,14 +1,16 @@
 import asyncio
 import sys
-import typing
 
+from typing import Callable, Optional
 from loguru import logger
 
 from tottle.api import API
-from tottle.polling.labelers.bot import BotLabeler
-from tottle.polling.polling import Polling
+from tottle.dispatch.labelers import BotLabeler
+from tottle.framework.polling import Polling
+from tottle.dispatch.routers import BotRouter
 from tottle.utils.logger import LoggerLevel
 from tottle.utils.taskmanager import TaskManager
+from tottle.utils.updater import Updater
 
 try:
     import uvloop
@@ -20,18 +22,27 @@ class Bot:
     def __init__(
             self,
             token: str,
-            logging_level: str = "INFO",
-            loop: typing.Optional[asyncio.AbstractEventLoop] = None,
+            check_updates: Optional[bool] = True,
+            logging_level: Optional[str] = "INFO",
+            loop: Optional[asyncio.AbstractEventLoop] = None,
     ):
+
+        self.loop = loop or asyncio.get_event_loop()
+        self.updater: "Updater" = Updater(self.loop)
+
         self.token = token
         self.api: "API" = API(self.token)
-
         self.on: "BotLabeler" = BotLabeler()
-        self.polling: "Polling" = Polling(self.api)
-        self.loop = loop or asyncio.get_event_loop()
+        self.router: "BotRouter" = BotRouter()
+        self.polling: "Polling" = Polling(
+            self.api, self.router
+        )
 
         if uvloop is not None:
             asyncio.set_event_loop_policy(uvloop.EventLoopPolicy())
+
+        if check_updates:
+            self.updater.check_version()
 
         logger.remove()
         logger.add(
@@ -50,13 +61,10 @@ class Bot:
         logger.level("ERROR", color="<red>")
         logger.level("DEBUG", color="<white>")
 
-    def run_polling(self, on_startup: typing.Callable = None):
-        logger.info("Polling will be started. Is it ok?")
+    def run_polling(self, on_startup: Callable = None):
+        logger.info("Polling will be started")
 
-        try:
-            task = TaskManager(self.loop)
-            task.add_task(self.polling.run())
-            task.add_task(on_startup) if on_startup else None
-            task.run()
-        except KeyboardInterrupt:
-            logger.warning("Keyboard interrupt...")
+        manager = TaskManager(self.loop)
+        manager.add_task(self.polling.run())
+        manager.add_task(on_startup) if on_startup else None
+        manager.run()
