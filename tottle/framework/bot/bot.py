@@ -8,9 +8,9 @@ from tottle.api import API
 from tottle.dispatch.labelers import BotLabeler
 from tottle.framework.polling import Polling
 from tottle.dispatch.routers import BotRouter
+from tottle.http import SessionManager, AiohttpClient, ABCSessionManager
 from tottle.utils.logger import LoggerLevel
 from tottle.utils.taskmanager import TaskManager
-from tottle.utils.updater import Updater
 
 try:
     import uvloop
@@ -22,27 +22,23 @@ class Bot:
     def __init__(
             self,
             token: str,
-            check_updates: Optional[bool] = True,
             logging_level: Optional[str] = "INFO",
             loop: Optional[asyncio.AbstractEventLoop] = None,
+            session_manager: Optional[ABCSessionManager] = None,
     ):
 
         self.loop = loop or asyncio.get_event_loop()
-        self.updater: "Updater" = Updater(self.loop)
+        self.http = session_manager or SessionManager(AiohttpClient)
 
         self.token = token
-        self.api: "API" = API(self.token)
+        self.api: "API" = API(self.token, self.http)
+
         self.on: "BotLabeler" = BotLabeler()
         self.router: "BotRouter" = BotRouter()
-        self.polling: "Polling" = Polling(
-            self.api, self.router
-        )
+        self.polling: "Polling" = Polling(self.api, self.router)
 
         if uvloop is not None:
             asyncio.set_event_loop_policy(uvloop.EventLoopPolicy())
-
-        if check_updates:
-            self.updater.check_version()
 
         logger.remove()
         logger.add(

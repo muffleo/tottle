@@ -19,19 +19,15 @@ class API(ABCAPI, APICategories):
             session_manager: typing.Optional[SessionManager] = None,
     ) -> None:
         self.token = token
-        self.request_url = self.API_URL + f"bot{self.token}/"
+        self.request_url: str = self.API_URL + f"bot{self.token}/"
         self.http: ABCSessionManager = session_manager or SessionManager(AiohttpClient)
 
     async def request(
             self,
             method: str,
             data: typing.Optional[dict] = None,
-    ) -> typing.Optional[
-        typing.Union[
-            typing.List[dict],
-            dict,
-        ]
-    ]:
+    ) -> typing.Optional[typing.Any]:
+
         async with self.http as session:
             response = await session.request_json(
                 "POST", url=self.request_url + method,

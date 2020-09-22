@@ -11,6 +11,6 @@ class ABCAPI(ABC):
     async def request(
             self,
             method: str,
-            params: typing.Optional[dict] = None,
-    ) -> dict:
+            data: typing.Optional[dict] = None,
+    ) -> typing.Optional[typing.Any]:
         pass

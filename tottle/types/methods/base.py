@@ -1,11 +1,11 @@
 import typing
 
 if typing.TYPE_CHECKING:
-    from tottle.api import API
+    from tottle.api import ABCAPI
 
 
 class Base:
-    def __init__(self, api: "API") -> None:
+    def __init__(self, api: "ABCAPI") -> None:
         self.api = api
 
     @classmethod
@@ -20,6 +20,6 @@ class Base:
         }
 
     @classmethod
-    def construct_api(cls, api: "API") -> "Base":
+    def construct_api(cls, api: "ABCAPI") -> "Base":
         cls.api = api
         return cls

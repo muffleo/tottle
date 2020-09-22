@@ -4,33 +4,37 @@ from typing import Union, List
 
 import vbml
 
-from tottle.types.mini import MessageMini
+from tottle.types.responses.chat import Message
 from tottle.dispatch.rules import ABCRule
 from tottle.utils.enums import ChatType
 
-VBML_PATCHER = vbml.Patcher()
+patcher = vbml.Patcher()
 
 
 class ABCMessageRule(ABCRule):
     @abstractmethod
-    async def check(self, message: MessageMini) -> bool:
+    async def check(self, message: Message) -> bool:
         pass
 
 
 class FromChatRule(ABCMessageRule):
-    async def check(self, message: MessageMini) -> bool:
+    async def check(self, message: Message) -> bool:
         return message.chat.type in (ChatType.GROUP, ChatType.SUPERGROUP)
 
 
 class PrivateMessageRule(ABCMessageRule):
-    async def check(self, message: MessageMini) -> bool:
+    async def check(self, message: Message) -> bool:
         return message.chat.type == ChatType.PRIVATE
 
 
-class TextRule(ABCMessageRule):
+class VBMLRule(ABCMessageRule):
     def __init__(
             self,
-            pattern: Union[str, "vbml.Pattern", List[Union[str, "vbml.Pattern"]]],
+            pattern: Union[
+                str, "vbml.Pattern", List[
+                    Union[str, "vbml.Pattern"],
+                ]
+            ],
             ignore_case: bool = False,
     ):
         if isinstance(pattern, str):
@@ -45,12 +49,12 @@ class TextRule(ABCMessageRule):
             ]
         self.patterns = pattern
 
-    async def check(self, message: MessageMini) -> Union[dict, bool]:
+    async def check(self, message: Message) -> Union[dict, bool]:
         for pattern in self.patterns:
-            result = VBML_PATCHER.check(
+            result = patcher.check(
                 pattern, message.text
             )
 
-            if isinstance(result, dict):
+            if result not in (None, False):
                 return result
         return False

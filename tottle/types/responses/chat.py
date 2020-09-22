@@ -1,5 +1,4 @@
 from typing import Optional, List
-
 from pydantic import BaseModel, Field
 
 from ..responses.animation import Animation
@@ -39,6 +38,29 @@ class ChatPermissions(BaseModel):
     can_pin_messages: Optional[bool] = None
 
 
+class ChatMember(BaseModel):
+    user: "User"
+    status: str
+    custom_title: Optional[str] = ""
+    until_date: Optional[int] = ""
+
+    can_be_edited: Optional[bool] = None
+    can_post_messages: Optional[bool] = None
+    can_edit_messages: Optional[bool] = None
+    can_delete_messages: Optional[bool] = None
+    can_restrict_members: Optional[bool] = None
+    can_promote_members: Optional[bool] = None
+    can_change_info: Optional[bool] = None
+    can_invite_users: Optional[bool] = None
+    can_pin_messages: Optional[bool] = None
+    is_member: Optional[bool] = None
+    can_send_messages: Optional[bool] = None
+    can_send_media_messages: Optional[bool] = None
+    can_send_polls: Optional[bool] = None
+    can_send_other_messages: Optional[bool] = None
+    can_add_web_page_previews: Optional[bool] = None
+
+
 class Chat(BaseModel):
     id: int
     type: str
@@ -61,7 +83,7 @@ class Message(BaseModel):
     chat: "Chat"
     date: int
     message_id: int
-    sender: Optional["User"] = Field(None, alias="from")
+    sender: Optional["User"] = Field(alias="from")
 
     forward_from: Optional["User"] = None
     forward_from_chat: Optional["Chat"] = None
@@ -70,7 +92,7 @@ class Message(BaseModel):
     forward_sender_name: Optional[str] = ""
     forward_date: Optional[int] = 0
 
-    reply_message: Optional["Message"] = Field(None, alias="reply_to_message")
+    reply_to_message: Optional["Message"] = None
     via_bot: Optional["User"] = None
     edit_date: Optional[int] = 0
 

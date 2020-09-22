@@ -1,2 +1,2 @@
 from .abc import ABCRule
-from .message import TextRule
+from .message import VBMLRule

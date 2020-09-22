@@ -3,9 +3,9 @@ from typing import Callable, Any, Dict, Optional, Type, List
 
 from vbml import Patcher
 from ..rules import ABCRule
-from ...types.mini import MessageMini
+from ...types.responses.chat import Message
 
-LabeledMessageHandler = Callable[..., Callable[[MessageMini], Any]]
+LabeledMessageHandler = Callable[..., Callable[[Message], Any]]
 
 
 class ABCBotLabeler(ABC):

@@ -1,6 +1,5 @@
 typing-extensions
 pydantic
 aiohttp
-setuptools
 loguru
 vbml
