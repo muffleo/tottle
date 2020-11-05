@@ -20,19 +20,16 @@
    
 ### Examples
 #### Longpoll
-In this example, the bot reacts to private messages with the pattern "i love &lt;thing&gt;" and passes the validation result as an argument to the handler (thanks to [vbml](https://github.com/tesseradecade/vbml), it is really easy):
+In this example, the bot reacts to the message and ignores its case with a specified pattern (thanks to [vbml](https://github.com/tesseradecade/vbml), it is really easy):
 ```python
 from tottle import Bot, Message
-from tottle.dispatch.rules import VBMLRule
+from tottle.dispatch.rules import MatchRule
 
 bot = Bot("token-here")
 
-@bot.on.private_message(VBMLRule("i love <thing>"))
-async def wrapper(message: Message, thing: str):
-    await bot.api.messages.send_message(
-        text=f"It's great that you love {thing}",
-        chat_id=message.chat.id,
-    )
+@bot.on.private_message(MatchRule("hello", ignore_case=True))
+async def greet_handler(message: Message):
+    await message.answer("Hello, my friend!")
 
 bot.run_polling()
 ```
