@@ -1,36 +1,44 @@
 import typing
 
 from tottle.api import API
+from tottle.dispatch.middlewares.abc import MiddlewareResponse
 from tottle.utils.enums import EventType
 from tottle.utils.logger import logger
 from tottle.dispatch.handlers import ABCHandler
 from tottle.dispatch.views.abc import ABCView
+from tottle.dispatch.middlewares import BaseMiddleware
 from tottle.types.minis.message import message_min
 
 
 class MessageView(ABCView):
     handlers: typing.List["ABCHandler"] = []
+    middlewares: typing.List["BaseMiddleware"] = []
 
     async def processor(self, event: dict) -> bool:
         return bool(event.get(EventType.MESSAGE))
 
     async def handler(self, event: dict, api: API) -> typing.Any:
         message = message_min(event, api)
-        handle_responses = []
+        context_variables = {}
 
+        for middleware in self.middlewares:
+            response = await middleware.pre(message)
+            if response == MiddlewareResponse(False):
+                return []
+            elif isinstance(response, dict):
+                context_variables.update(response)
+
+        handle_responses = []
         for handler in self.handlers:
             result = await handler.filter(message)
 
             if result is False:
                 continue
-            elif not isinstance(result, dict):
-                result = {}
+            elif isinstance(result, dict):
+                context_variables.update(result)
 
-            handle_responses.append(
-                await handler.process(
-                    message, **result
-                )
-            )
+            handler_response = await handler.process(message, **context_variables)
+            handle_responses.append(handler_response)
 
             logger.success(
                 "Message \"{}\" was processed successfully!",
@@ -39,4 +47,5 @@ class MessageView(ABCView):
                 )
             )
 
-        return handle_responses
+        for middleware in self.middlewares:
+            await middleware.post(message, self, handle_responses)

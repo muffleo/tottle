@@ -44,8 +44,8 @@ You can find more examples in the [examples](./examples) directory.
 ### Contributing
 Because the whole library is not actually completed, we are always glad to see your support. This is a list of our current goals:
 
-| Plan to add | In progress              | Completed                  |
-|-------------|--------------------------|----------------------------|
-| Middlewares | API and its object types | HTTP Client                |
-| Callback    |                          | Polling                    |
-| FSM         |                          | Generating (keyboard etc.) |
+| Plan to add    | In progress              | Completed                  |
+|----------------|--------------------------|----------------------------|
+| FSM            | API and its object types | Middlewares                |
+| Return Manager | HTTP Client              | Polling                    |
+| Blueprints     |                          | Generating (keyboard etc.) |
