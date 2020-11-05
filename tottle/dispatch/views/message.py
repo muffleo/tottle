@@ -5,7 +5,7 @@ from tottle.utils.enums import EventType
 from tottle.utils.logger import logger
 from tottle.dispatch.handlers import ABCHandler
 from tottle.dispatch.views.abc import ABCView
-from tottle.types.responses.chat import Message
+from tottle.types.minis.message import message_min
 
 
 class MessageView(ABCView):
@@ -15,7 +15,7 @@ class MessageView(ABCView):
         return bool(event.get(EventType.MESSAGE))
 
     async def handler(self, event: dict, api: API) -> typing.Any:
-        message = Message(**event["message"])
+        message = message_min(event, api)
         handle_responses = []
 
         for handler in self.handlers:
