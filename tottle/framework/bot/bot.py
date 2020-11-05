@@ -45,7 +45,7 @@ class Bot:
             level=0,
             enqueue=True,
             sink=sys.stdout,
-            format="<level>/ Tottle / {message}</level>"
+            format="<level>Tottle / {message}</level>"
                    " [at <light-blue><bold>{time:HH:MM:ss}</bold></light-blue>]",
             colorize=True,
             filter=LoggerLevel(logging_level),
