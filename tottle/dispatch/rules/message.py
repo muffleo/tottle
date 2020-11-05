@@ -27,7 +27,7 @@ class PrivateMessageRule(ABCMessageRule):
         return message.chat.type == ChatType.PRIVATE
 
 
-class VBMLRule(ABCMessageRule):
+class MatchRule(ABCMessageRule):
     def __init__(
             self,
             pattern: Union[

@@ -1,2 +1,2 @@
 from .abc import ABCRule
-from .message import VBMLRule
+from .message import MatchRule
