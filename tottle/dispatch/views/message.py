@@ -2,8 +2,8 @@ import typing
 
 from tottle.api import API
 from tottle.dispatch.middlewares.abc import MiddlewareResponse
-from tottle.utils.enums import EventType
-from tottle.utils.logger import logger
+from tottle.tools.enums import EventType
+from tottle.tools.dev_tools.logger import logger
 from tottle.dispatch.handlers import ABCHandler
 from tottle.dispatch.views.abc import ABCView
 from tottle.dispatch.middlewares import BaseMiddleware

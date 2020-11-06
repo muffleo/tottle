@@ -17,5 +17,5 @@ async def message_handler(message: Message):
     await message.answer("Hello! I am bot.")
 
 
-bot.on.message_view.register_middleware(Middleware())
-bot.run_polling()
+bot.router.views["message"].register_middleware(Middleware())
+bot.run_forever()

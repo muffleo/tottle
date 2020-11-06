@@ -27,4 +27,4 @@ async def question_handler(message: Message):
         reply_markup=remove_keyboard.dict()
     )
 
-bot.run_polling()
+bot.run_forever()

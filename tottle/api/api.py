@@ -7,7 +7,7 @@ from tottle.http import (
     AiohttpClient
 )
 from tottle.types.categories import APICategories
-from tottle.utils.exceptions import TelegramError
+from tottle.tools.exceptions import TelegramError
 
 
 class API(ABCAPI, APICategories):

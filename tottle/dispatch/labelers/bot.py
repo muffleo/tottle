@@ -2,7 +2,9 @@ from tottle.dispatch.handlers import FunctionHandler
 from tottle.dispatch.labelers.abc import ABCBotLabeler, LabeledMessageHandler
 from tottle.dispatch.rules import ABCRule
 from tottle.dispatch.rules.message import FromChatRule, PrivateMessageRule
-from tottle.dispatch.views import MessageView
+from tottle.dispatch.views import ABCView, MessageView
+
+from typing import Dict
 
 
 class BotLabeler(ABCBotLabeler):
@@ -49,3 +51,9 @@ class BotLabeler(ABCBotLabeler):
 
         return decorator
 
+    def load(self, labeler: "BotLabeler"):
+        self.message_view.handlers.extend(labeler.message_view.handlers)
+        self.message_view.middlewares.extend(labeler.message_view.middlewares)
+
+    def views(self) -> Dict[str, "ABCView"]:
+        return {"message": self.message_view}

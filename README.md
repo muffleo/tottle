@@ -26,7 +26,7 @@ bot = Bot("token-here")
 async def greet_handler(message: Message):
     await message.reply("Hello, world!")
 
-bot.run_polling()
+bot.run_forever()
 ```
 Also, you can specify a pattern for text match (or even give it a [vbml](https://github.com/tesseradecade/vbml) pattern). For more examples visit [examples](./examples) directory.
 

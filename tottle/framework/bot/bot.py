@@ -1,73 +1,82 @@
-import asyncio
-import sys
+from tottle.api import API, ABCAPI
+from tottle.dispatch.labelers import BotLabeler, ABCBotLabeler
+from tottle.framework.abc import ABCFramework
+from tottle.polling import BotPolling, ABCPolling
+from tottle.dispatch.routers import BotRouter, ABCRouter
+from tottle.tools.dev_tools.loop_wrapper import LoopWrapper
+from tottle.tools.dev_tools.logger import Logger, logger, default_logger
 
-from typing import Callable, Optional
-from loguru import logger
-
-from tottle.api import API
-from tottle.dispatch.labelers import BotLabeler
-from tottle.framework.polling import Polling
-from tottle.dispatch.routers import BotRouter
-from tottle.http import SessionManager, AiohttpClient, ABCSessionManager
-from tottle.utils.logger import LoggerLevel
-from tottle.utils.taskmanager import TaskManager
+from typing import Callable, Optional, NoReturn
+from asyncio import AbstractEventLoop, get_event_loop, set_event_loop_policy
 
 try:
     import uvloop
+    set_event_loop_policy(uvloop.EventLoopPolicy())
 except ImportError:
-    uvloop = None
+    ...
 
 
-class Bot:
+class Bot(ABCFramework):
     def __init__(
             self,
-            token: str,
-            logging_level: Optional[str] = "INFO",
-            loop: Optional[asyncio.AbstractEventLoop] = None,
-            session_manager: Optional[ABCSessionManager] = None,
+            token: Optional[str] = None,
+            api: Optional[ABCAPI] = None,
+            polling: Optional[ABCPolling] = None,
+            router: Optional["ABCRouter"] = None,
+            labeler: Optional["ABCBotLabeler"] = None,
+            loop: Optional[AbstractEventLoop] = None,
+            loop_wrapper: Optional[LoopWrapper] = None,
+            custom_logger: Optional[Logger] = None,
     ):
+        self.api: "API" = API(token) if token else api
+        self.loop_wrapper: "LoopWrapper" = loop_wrapper or LoopWrapper()
+        self._labeler: "BotLabeler" = labeler or BotLabeler()
+        self._router: "BotRouter" = router or BotRouter()
+        self._polling: "BotPolling" = polling or BotPolling(self.api)
+        self._loop = loop
 
-        self.loop = loop or asyncio.get_event_loop()
-        self.http = session_manager or SessionManager(AiohttpClient)
+        (custom_logger or default_logger).setup()
 
-        self.token = token
-        self.api: "API" = API(self.token, self.http)
+    async def run_polling(self, custom_polling: Optional[ABCPolling] = None) -> NoReturn:
+        polling = custom_polling or self.polling
+        logger.info("Polling will be started!")
 
-        self.on: "BotLabeler" = BotLabeler()
-        self.router: "BotRouter" = BotRouter()
-        self.polling: "Polling" = Polling(self.api, self.router)
+        async for update in polling.listen():  # type: ignore
+            await self.router.route(update, self.api)
 
-        if uvloop is not None:
-            asyncio.set_event_loop_policy(uvloop.EventLoopPolicy())
+    def run_forever(self, on_startup: Optional[Callable] = None, on_shutdown: Optional[Callable] = None):
+        lw = LoopWrapper(on_startup=on_startup, on_shutdown=on_shutdown)
+        lw.add_task(self.run_polling())
+        lw.run_forever()
 
-        logger.remove()
-        logger.add(
-            level=0,
-            enqueue=True,
-            sink=sys.stdout,
-            format="<level>Tottle / {message}</level>"
-                   " [at <light-blue><bold>{time:HH:MM:ss}</bold></light-blue>]",
-            colorize=True,
-            filter=LoggerLevel(logging_level),
+    @property
+    def on(self) -> "ABCBotLabeler":
+        return self._labeler
+
+    @property
+    def polling(self) -> "ABCPolling":
+        return self._polling.construct(self.api)
+
+    @property
+    def router(self) -> "ABCRouter":
+        return self._router.construct(
+            views=self._labeler.views()
         )
 
-        logger.level("INFO", color="<blue>")
-        logger.level("SUCCESS", color="<green>")
-        logger.level("WARNING", color="<yellow>")
-        logger.level("ERROR", color="<red>")
-        logger.level("DEBUG", color="<white>")
+    @property
+    def loop(self) -> AbstractEventLoop:
+        if self._loop is None:
+            self._loop = get_event_loop()
+        return self._loop
 
-    def run_polling(
-            self,
-            on_startup: Optional[Callable] = None,
-            on_shutdown: Optional[Callable] = None,
-    ):
-        logger.info("Polling will be started")
+    @loop.setter
+    def loop(self, new_loop: AbstractEventLoop):
+        self._loop = new_loop
 
-        manager = TaskManager(
-            self.loop,
-            on_startup=on_startup,
-            on_shutdown=on_shutdown,
-        )
-        manager.add_task(self.polling.run())
-        manager.run()
+    @router.setter
+    def router(self, new_router: "ABCRouter"):
+        self._router = new_router
+
+    @polling.setter
+    def polling(self, value):
+        self._polling = value

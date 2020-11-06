@@ -12,6 +12,12 @@ class ABCRouter(ABC):
     async def route(self, event: dict, api: "ABCAPI") -> typing.Any:
         pass
 
+    @abstractmethod
+    def construct(
+            self, views: typing.Dict[str, "ABCView"]
+    ) -> "ABCRouter":
+        pass
+
     def add_view(self, name: str, tree: "ABCView") -> typing.NoReturn:
         self.views[name] = tree
 

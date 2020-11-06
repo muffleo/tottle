@@ -11,4 +11,4 @@ async def prompt_handler(message: Message, name: str):
     await message.answer(f"Hello, {name}!")
 
 
-bot.run_polling()
+bot.run_forever()

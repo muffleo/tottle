@@ -6,7 +6,7 @@ import vbml
 
 from tottle.types.responses.chat import Message
 from tottle.dispatch.rules import ABCRule
-from tottle.utils.enums import ChatType
+from tottle.tools.enums import ChatType
 
 patcher = vbml.Patcher()
 
