@@ -2,9 +2,6 @@
 
 <p align="center">
     <img src="https://img.shields.io/github/license/muffleo/tottle">
-    <a href="https://vk.me/join/AJQ1d3monBj6BmG3HDp_6TN7">
-        <img src="https://img.shields.io/badge/VK%20Chat-join-blue" alt="VK Chat — join us!">
-    </a>
     <a href="https://t.me/joinchat/S_jqPkv4GVNEb4Z70MI6vQ">
         <img src="https://img.shields.io/badge/Telegram%20Chat-join-informational" alt="Telegram Chat — join us!">
     </a>
