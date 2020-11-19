@@ -13,10 +13,10 @@ class PassportFile(BaseModel):
 
 class EncryptedPassportElement(BaseModel):
     type: str
-    data: Optional[str] = ""
-    phone_number: Optional[str] = ""
-    email: Optional[str] = ""
-    files: Optional[List[PassportFile]] = []
+    data: Optional[str] = None
+    phone_number: Optional[str] = None
+    email: Optional[str] = None
+    files: Optional[List[PassportFile]] = None
 
     front_side: Optional[PassportFile] = None
     reverse_side: Optional[PassportFile] = None

@@ -1,10 +1,10 @@
 from abc import ABC, abstractmethod
 from typing import List, Optional
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 
-from ..responses.game import CallbackGame
-from ..responses.login import LoginUrl
+from tottle.types.responses.game import CallbackGame
+from tottle.types.responses.login import LoginUrl
 
 
 class AbstractMarkup(ABC, BaseModel):

@@ -39,8 +39,8 @@ Also, you can specify a pattern for text match (or even give it a [vbml](https:/
 ### ⭐ Contributing
 Because the whole library is not actually completed, we are always glad to see your support. This is a list of our current goals:
 
-| Plan to add    | In progress              | Completed                  |
-|----------------|--------------------------|----------------------------|
-| FSM            | API and its object types | Middlewares                |
-| Return Manager | HTTP Client              | Polling                    |
-| Blueprints     |                          | Generating (keyboard etc.) |
+| Plan to add           | In progress                | Completed                  |
+|-----------------------|----------------------------|----------------------------|
+| Proper error handling | API and its object types   | Middlewares                |
+| Return Manager        | Generating (keyboard etc.) | Polling                    |
+| Blueprints            | State dispenser            | HTTP Client                |

@@ -2,7 +2,7 @@ from typing import Optional
 
 from pydantic import BaseModel
 
-from ..responses.photo import PhotoSize
+from tottle.types.responses.photo import PhotoSize
 
 
 class Animation(BaseModel):
@@ -12,6 +12,6 @@ class Animation(BaseModel):
     height: int
     duration: int
     thumb: Optional["PhotoSize"] = None
-    file_name: Optional[str] = ""
-    mime_type: Optional[str] = ""
-    file_size: Optional[int] = 0
+    file_name: Optional[str] = None
+    mime_type: Optional[str] = None
+    file_size: Optional[int] = None

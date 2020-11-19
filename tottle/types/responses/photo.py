@@ -7,4 +7,4 @@ class PhotoSize(BaseModel):
     file_unique_id: str
     width: int
     height: int
-    file_size: Optional[int] = 0
+    file_size: Optional[int] = None

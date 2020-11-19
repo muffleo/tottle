@@ -2,21 +2,21 @@ from typing import Optional
 
 from pydantic import BaseModel, Field
 
-from ..responses.chat import Message
-from ..responses.location import Location
-from ..responses.order import ShippingAddress, OrderInfo
-from ..responses.user import User
+from tottle.types.responses.chat import Message
+from tottle.types.responses.location import Location
+from tottle.types.responses.order import ShippingAddress, OrderInfo
+from tottle.types.responses.user import User
 
 
 class CallbackQuery(BaseModel):
     id: str
     sender: User = Field(alias="from")
     message: Optional["Message"] = None
-    inline_message_id: Optional[str] = ""
+    inline_message_id: Optional[str] = None
 
     chat_instance: str
-    data: Optional[str] = ""
-    game_short_name: Optional[str] = ""
+    data: Optional[str] = None
+    game_short_name: Optional[str] = None
 
 
 class InlineQuery(BaseModel):
@@ -43,7 +43,7 @@ class PreCheckoutQuery(BaseModel):
     total_amount: int
 
     invoice_payload: str
-    shipping_option_id: Optional[str] = ""
+    shipping_option_id: Optional[str] = None
     order_info: Optional[OrderInfo] = None
 
 
@@ -52,5 +52,5 @@ class ChosenInlineResult(BaseModel):
     chooser: User = Field(alias="from")
     location: Optional[Location] = None
 
-    inline_message_id: Optional[str] = ""
+    inline_message_id: Optional[str] = None
     query: str

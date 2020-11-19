@@ -3,7 +3,7 @@ from typing import Optional, List
 from pydantic import BaseModel, Field
 
 from .user import User
-from ..responses.entity import Entity
+from tottle.types.responses.entity import Entity
 
 
 class PollAnswer(BaseModel):

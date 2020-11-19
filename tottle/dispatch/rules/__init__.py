@@ -1,2 +1,2 @@
 from .abc import ABCRule
-from .message import MatchRule
+from .bot import MatchRule

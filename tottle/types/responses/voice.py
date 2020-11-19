@@ -6,7 +6,7 @@ from pydantic import BaseModel
 class Voice(BaseModel):
     file_id: str
     file_unique_id: str
-    file_size: Optional[int] = 0
+    file_size: Optional[int] = None
 
     duration: int
-    mime_type: Optional[str] = ""
+    mime_type: Optional[str] = None

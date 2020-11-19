@@ -1,12 +1,13 @@
 import typing
 
 from tottle.api import API
-from ..responses.chat import Message
-from ..responses.update import Update
+from tottle.types.responses.chat import Message
+from tottle.types.state import StatePeer
 
 
 class MessageMini(Message):
     ctx_api: typing.Optional[typing.Any] = None
+    state_peer: typing.Optional[StatePeer] = None
 
     @property
     def api(self) -> "API":

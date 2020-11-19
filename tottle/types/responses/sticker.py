@@ -2,8 +2,8 @@ from typing import Optional
 
 from pydantic import BaseModel
 
-from ..responses.mask import MaskPosition
-from ..responses.photo import PhotoSize
+from tottle.types.responses.mask import MaskPosition
+from tottle.types.responses.photo import PhotoSize
 
 
 class Sticker(BaseModel):
@@ -17,6 +17,6 @@ class Sticker(BaseModel):
     is_animated: bool
     thumb: Optional[PhotoSize] = None
 
-    emoji: Optional[str] = ""
-    set_name: Optional[str] = ""
-    mask_position: Optional[MaskPosition]
+    emoji: Optional[str] = None
+    set_name: Optional[str] = None
+    mask_position: Optional[MaskPosition] = None

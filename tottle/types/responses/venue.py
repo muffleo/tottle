@@ -2,7 +2,7 @@ from typing import Optional
 
 from pydantic import BaseModel
 
-from ..responses.location import Location
+from tottle.types.responses.location import Location
 
 
 class Venue(BaseModel):
@@ -10,5 +10,5 @@ class Venue(BaseModel):
 
     title: str
     address: str
-    foursquare_id: Optional[str] = ""
-    foursquare_type: Optional[str] = ""
+    foursquare_id: Optional[str] = None
+    foursquare_type: Optional[str] = None

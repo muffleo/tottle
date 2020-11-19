@@ -2,9 +2,9 @@ from typing import Optional
 
 from pydantic import BaseModel, Field
 
-from ..responses.chat import Message
-from ..responses.poll import Poll, PollAnswer
-from ..responses.query import (
+from tottle.types.responses.chat import Message
+from tottle.types.responses.poll import Poll, PollAnswer
+from tottle.types.responses.query import (
     InlineQuery,
     ChosenInlineResult,
     CallbackQuery,

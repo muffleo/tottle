@@ -4,6 +4,7 @@ from abc import ABC, abstractmethod
 from tottle import API
 from tottle.dispatch.middlewares import BaseMiddleware
 from tottle.dispatch.handlers import ABCHandler
+from tottle.dispatch.dispenser.abc import ABCStateDispenser
 
 
 class ABCView(ABC):
@@ -15,7 +16,9 @@ class ABCView(ABC):
         pass
 
     @abstractmethod
-    async def handler(self, event: dict, api: API) -> typing.Any:
+    async def handler(
+            self, event: dict, api: API, state_dispenser: "ABCStateDispenser"
+    ) -> typing.Any:
         pass
 
     def register_middleware(self, middleware: "BaseMiddleware"):

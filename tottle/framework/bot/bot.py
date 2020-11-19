@@ -1,5 +1,6 @@
 from tottle.api import API, ABCAPI
-from tottle.dispatch.labelers import BotLabeler, ABCBotLabeler
+from tottle.dispatch.dispenser.default import DefaultStateDispenser
+from tottle.framework.bot.labelers import BotLabeler, ABCBotLabeler
 from tottle.framework.abc import ABCFramework
 from tottle.polling import BotPolling, ABCPolling
 from tottle.dispatch.routers import BotRouter, ABCRouter
@@ -30,7 +31,8 @@ class Bot(ABCFramework):
     ):
         self.api: "API" = API(token) if token else api
         self.loop_wrapper: "LoopWrapper" = loop_wrapper or LoopWrapper()
-        self._labeler: "BotLabeler" = labeler or BotLabeler()
+        self.labeler: "BotLabeler" = labeler or BotLabeler()
+        self.state_dispenser = DefaultStateDispenser()
         self._router: "BotRouter" = router or BotRouter()
         self._polling: "BotPolling" = polling or BotPolling(self.api)
         self._loop = loop
@@ -42,6 +44,7 @@ class Bot(ABCFramework):
         logger.info("Polling will be started!")
 
         async for update in polling.listen():  # type: ignore
+            logger.debug("New update: {}", update)
             await self.router.route(update, self.api)
 
     def run_forever(self, on_startup: Optional[Callable] = None, on_shutdown: Optional[Callable] = None):
@@ -51,7 +54,7 @@ class Bot(ABCFramework):
 
     @property
     def on(self) -> "ABCBotLabeler":
-        return self._labeler
+        return self.labeler
 
     @property
     def polling(self) -> "ABCPolling":
@@ -60,7 +63,8 @@ class Bot(ABCFramework):
     @property
     def router(self) -> "ABCRouter":
         return self._router.construct(
-            views=self._labeler.views()
+            views=self.labeler.views(),
+            state_dispenser=self.state_dispenser,
         )
 
     @property

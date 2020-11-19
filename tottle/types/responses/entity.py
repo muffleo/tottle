@@ -2,13 +2,13 @@ from typing import Optional
 
 from pydantic import BaseModel
 
-from ..responses.user import User
+from tottle.types.responses.user import User
 
 
 class Entity(BaseModel):
     type: str
     offset: int
     length: int
-    url: Optional[str] = ""
+    url: Optional[str] = None
     user: Optional["User"] = None
-    language: Optional[str] = ""
+    language: Optional[str] = None

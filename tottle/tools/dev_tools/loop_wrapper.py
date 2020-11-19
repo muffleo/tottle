@@ -34,7 +34,7 @@ class LoopWrapper:
             loop.run_forever()
 
         except KeyboardInterrupt:
-            logger.info("Keyboard Interrupt")
+            logger.warning("Keyboard Interrupt")
 
         finally:
             [

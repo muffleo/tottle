@@ -2,15 +2,15 @@ from typing import Optional
 
 from pydantic import BaseModel
 
-from ..responses.photo import PhotoSize
+from tottle.types.responses.photo import PhotoSize
 
 
 class Audio(BaseModel):
     file_id: str
     file_unique_id: str
     duration: int
-    performer: Optional[str] = ""
-    title: Optional[str] = ""
-    mime_type: Optional[str] = ""
-    file_size: Optional[int] = 0
+    performer: Optional[str] = None
+    title: Optional[str] = None
+    mime_type: Optional[str] = None
+    file_size: Optional[int] = None
     thumb: Optional["PhotoSize"] = None
