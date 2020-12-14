@@ -18,13 +18,13 @@ class Logger:
     def __init__(
             self,
             format: str,
-            enqueue: Optional[bool] = None,
+            enqueue: bool = True,
             levels: Optional[Iterable[dict]] = None,
             current_level: Optional[LoggerLevel] = None,
             sink: Optional[Union[TextIO, Callable[[Message], None], Handler]] = None,
     ):
         self.format = format
-        self.enqueue = enqueue or True
+        self.enqueue = enqueue
         self.levels = levels or []
         self.current_level = current_level or LoggerLevel("DEBUG")
         self.sink = sink or sys.stdout
