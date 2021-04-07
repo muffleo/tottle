@@ -1,4 +1,5 @@
-from tottle.tools.dev_tools.delayed_task import DelayedTask
+from .delayed_task import delayed_task
+from .auto_reload import watch_to_reload
 
 from asyncio import AbstractEventLoop, get_event_loop, iscoroutine, iscoroutinefunction
 from typing import Optional, List, Coroutine, Any, Union, Callable
@@ -13,14 +14,21 @@ class LoopWrapper:
         *,
         on_startup: Optional[List[Task]] = None,
         on_shutdown: Optional[List[Task]] = None,
+        auto_reload: Optional[bool] = None,
+        auto_reload_dir: Optional[str] = None,
         tasks: Optional[List[Task]] = None,
     ):
         self.on_startup = on_startup or []
         self.on_shutdown = on_shutdown or []
+        self.auto_reload = auto_reload or False
+        self.auto_reload_dir = auto_reload_dir or "."
         self.tasks = tasks or []
 
     def run_forever(self, loop: Optional[AbstractEventLoop] = None):
         loop = loop or get_event_loop()
+
+        if not len(self.tasks):
+            logger.warning("You ran loop with 0 tasks. Is it ok?")
 
         try:
             [
@@ -28,14 +36,15 @@ class LoopWrapper:
                 for startup_task in self.on_startup
             ]
 
+            if self.auto_reload:
+                loop.create_task(watch_to_reload(self.auto_reload_dir))
+
             for task in self.tasks:
                 loop.create_task(task)
 
             loop.run_forever()
-
         except KeyboardInterrupt:
             logger.warning("Keyboard Interrupt")
-
         finally:
             [
                 loop.run_until_complete(shutdown_task)
@@ -69,7 +78,7 @@ class LoopWrapper:
         seconds += days * 24 * 60 * 60
 
         def decorator(func: Callable):
-            self.add_task(DelayedTask(seconds, func))
+            self.add_task(delayed_task(seconds, func))
             return func
 
         return decorator
@@ -89,7 +98,7 @@ class LoopWrapper:
         seconds += days * 24 * 60 * 60
 
         def decorator(func: Callable):
-            self.add_task(DelayedTask(seconds, func, do_break=True))
+            self.add_task(delayed_task(seconds, func, do_break=True))
             return func
 
         return decorator
