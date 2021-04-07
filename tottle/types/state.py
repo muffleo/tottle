@@ -12,7 +12,7 @@ class StatePeer(BaseModel):
     peer_id: int
     state: int
 
-    def get_state_path(self) -> Tuple[Type[BaseStateGroup], BaseStateGroup]:
+    def get_state_path(self) -> Tuple[Type[int], int]:
         return self.state.__class__, self.state
 
     def get_state_repr(self) -> str:
