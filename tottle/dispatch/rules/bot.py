@@ -1,7 +1,6 @@
 from tottle.types.minis.message import MessageMini as Message
 from tottle.types.state import BaseStateGroup
 from tottle.dispatch.rules import ABCRule
-from tottle.tools.enums import ChatType
 
 import re
 import vbml
@@ -30,7 +29,7 @@ class PeerRule(ABCMessageRule):
 
 class CommandRule(ABCMessageRule):
     def __init__(self, text: str, prefixes: Optional[List[str]] = None):
-        self.prefixes = prefixes or []
+        self.prefixes = prefixes or ["/"]
         self.text = text
 
     async def check(self, message: Message) -> bool:
@@ -130,10 +129,20 @@ class RegexRule(ABCMessageRule):
 class StateRule(ABCMessageRule):
     def __init__(self, state: Union[List[BaseStateGroup], BaseStateGroup]):
         if not isinstance(state, list):
-            state = [state]
+            state = [] if state is None else [state]
+
         self.state = state
 
     async def check(self, message: Message) -> bool:
         if message.state_peer is None:
-            return bool(self.state)
+            return not self.state
+
         return message.state_peer.state in self.state
+
+
+class MessageLengthRule(ABCMessageRule):
+    def __init__(self, min_length: int):
+        self.min_length = min_length
+
+    async def check(self, message: Message) -> bool:
+        return len(message.text) >= self.min_length

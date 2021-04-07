@@ -2,11 +2,9 @@ from tottle.framework.bot.labelers import ABCBotLabeler, LabeledMessageHandler
 from tottle.dispatch.handlers import FunctionHandler
 from tottle.dispatch.rules import ABCRule
 from tottle.dispatch.rules.bot import (
-    PeerRule,
-    MatchRule,
-    StateRule,
-    RegexRule,
-    LevensteinRule
+    PeerRule, MatchRule, StateRule,
+    RegexRule, LevensteinRule, MessageLengthRule,
+    CommandRule
 )
 from tottle.dispatch.views import ABCView, MessageView
 
@@ -16,10 +14,13 @@ from typing import Dict, Type, Any, List
 
 DEFAULT_CUSTOM_RULES: Dict[str, Type[ABCRule]] = {
     "text": MatchRule,
+    "command": CommandRule,
     "regex": RegexRule,
     "state": StateRule,
     "levenstein": LevensteinRule,
+    "lev": LevensteinRule,
     "from_chat": PeerRule,
+    "length": MessageLengthRule
 }
 
 

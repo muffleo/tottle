@@ -55,4 +55,5 @@ class MessageMini(Message):
 def message_min(event: dict, api: "API") -> "MessageMini":
     message = MessageMini(**event["message"])
     setattr(message, "ctx_api", api)
+
     return message
