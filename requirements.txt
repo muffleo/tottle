@@ -3,3 +3,4 @@ pydantic
 aiohttp
 loguru
 vbml
+watchgod

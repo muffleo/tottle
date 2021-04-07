@@ -4,6 +4,10 @@ from abc import ABC, abstractmethod
 
 class ABCHTTPClient(ABC):
     @abstractmethod
+    def __init__(self, *args, **kwargs):
+        pass
+
+    @abstractmethod
     async def request_text(
             self, method: str, url: str, data: typing.Optional[dict] = None, **kwargs
     ) -> str:
@@ -22,5 +26,11 @@ class ABCHTTPClient(ABC):
         pass
 
     @abstractmethod
-    async def close(self) -> typing.NoReturn:
+    async def close(self) -> None:
         pass
+
+    async def __aenter__(self) -> "ABCHTTPClient":
+        return self
+
+    async def __aexit__(self, exc_type, exc_val, exc_tb) -> None:
+        await self.close()

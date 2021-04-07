@@ -12,7 +12,10 @@ class AiohttpClient(ABCHTTPClient):
             self,
             loop: typing.Optional[asyncio.AbstractEventLoop] = None,
             session: typing.Optional[ClientSession] = None,
+            *args,
+            **kwargs
     ):
+        super().__init__(*args, **kwargs)
         self.loop = loop or asyncio.get_event_loop()
         self.session = session or ClientSession(
             connector=TCPConnector(ssl=False),

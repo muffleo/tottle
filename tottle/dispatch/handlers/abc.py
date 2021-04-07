@@ -3,6 +3,8 @@ from abc import ABC, abstractmethod
 
 
 class ABCHandler(ABC):
+    blocking: bool = False
+
     @abstractmethod
     async def filter(self, event: typing.Any) -> typing.Union[dict, bool]:
         pass

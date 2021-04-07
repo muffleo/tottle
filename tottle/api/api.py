@@ -3,7 +3,7 @@ import typing
 from tottle.api.abc import ABCAPI
 from tottle.http import (
     ABCSessionManager,
-    SessionManager,
+    SingleSessionManager,
     AiohttpClient
 )
 from tottle.types.categories import APICategories
@@ -16,11 +16,11 @@ class API(ABCAPI, APICategories):
     def __init__(
             self,
             token: str,
-            session_manager: typing.Optional[SessionManager] = None,
+            session_manager: typing.Optional[SingleSessionManager] = None,
     ) -> None:
-        self.token = token
+        self.token: str = token
         self.request_url: str = self.API_URL + f"bot{self.token}/"
-        self.http: ABCSessionManager = session_manager or SessionManager(AiohttpClient)
+        self.http: ABCSessionManager = session_manager or SingleSessionManager(AiohttpClient)
 
     async def request(
             self,
