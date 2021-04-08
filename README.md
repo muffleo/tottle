@@ -33,6 +33,10 @@ Because the whole library is not actually completed, we are always glad to see y
 
 | Plan to add           | In progress                | Completed                  |
 |-----------------------|----------------------------|----------------------------|
-| Proper error handling | API and its object types   | Middlewares                |
-| Return Manager        | Generating (keyboard etc.) | Polling                    |
-| Blueprints            | State dispenser            | HTTP Client                |
+|                       | API and its object types   | Middlewares                |
+|                       | Generating (keyboard etc.) | Polling                    |
+|                       |                            | HTTP Client                |
+|                       |                            | State dispenser            |
+|                       |                            | Return Manager             |
+|                       |                            | Blueprints                 |
+|                       |                            | Exception factory          |
