@@ -1,1 +1,1 @@
-from .bot import Bot, run_multibot
+from .bot import Bot, run_multibot, BotBlueprint
