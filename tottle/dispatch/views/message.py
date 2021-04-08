@@ -8,6 +8,7 @@ from tottle.tools.dev_tools.logger import logger
 from tottle.dispatch.handlers import ABCHandler
 from tottle.dispatch.views.abc import ABCView
 from tottle.dispatch.middlewares import BaseMiddleware
+from tottle.dispatch.return_manager import BotMessageReturnHandler
 from tottle.types.minis.message import message_min
 
 
@@ -20,6 +21,7 @@ class MessageView(ABCView):
         self.handlers: List["ABCHandler"] = []
         self.middlewares: List["BaseMiddleware"] = []
         self.default_text_approximators: List[Callable[[message_min], str]] = []
+        self.handler_return_manager = BotMessageReturnHandler()
 
     async def processor(self, event: dict) -> bool:
         return bool(event.get(EventType.MESSAGE))
@@ -59,6 +61,12 @@ class MessageView(ABCView):
 
             handler_response = await handler.process(message, **context_variables)
             handle_responses.append(handler_response)
+            return_handler = self.handler_return_manager.get_handler(handler_response)
+
+            if return_handler is not None:
+                await return_handler(
+                    self.handler_return_manager, handler_response, message, context_variables
+                )
 
             if handler.blocking:
                 break
