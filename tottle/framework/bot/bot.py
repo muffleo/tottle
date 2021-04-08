@@ -6,6 +6,7 @@ from tottle.polling import BotPolling, ABCPolling
 from tottle.dispatch.routers import BotRouter, ABCRouter
 from tottle.tools.dev_tools.loop_wrapper.loop_wrapper import LoopWrapper
 from tottle.tools.dev_tools.logger import Logger, logger, default_logger
+from tottle.exception_factory import ABCErrorHandler, ErrorHandler
 
 from typing import Callable, Optional, NoReturn, Iterable
 from asyncio import AbstractEventLoop, get_event_loop, set_event_loop_policy
@@ -29,9 +30,11 @@ class Bot(ABCFramework):
             loop_wrapper: Optional[LoopWrapper] = None,
             custom_logger: Optional[Logger] = None,
             task_each_event: bool = False,
+            error_handler: Optional["ABCErrorHandler"] = None,
     ):
         self.api: "API" = API(token) if token else api
         self.apis: Optional[Iterable["ABCAPI"]] = None
+        self.error_handler = error_handler or ErrorHandler()
         self.loop_wrapper: "LoopWrapper" = loop_wrapper or LoopWrapper()
         self.labeler: "BotLabeler" = labeler or BotLabeler()
         self.state_dispenser = DefaultStateDispenser()
@@ -79,6 +82,7 @@ class Bot(ABCFramework):
         return self._router.construct(
             views=self.labeler.views(),
             state_dispenser=self.state_dispenser,
+            error_handler=self.error_handler,
         )
 
     @property

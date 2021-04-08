@@ -2,13 +2,15 @@ import typing
 from abc import ABC, abstractmethod
 
 from tottle.api import ABCAPI
-from ..dispenser.abc import ABCStateDispenser
-from ..views import ABCView
+from tottle.dispatch.dispenser.abc import ABCStateDispenser
+from tottle.dispatch.views import ABCView
+from tottle.exception_factory import ABCErrorHandler
 
 
 class ABCRouter(ABC):
     views: typing.Dict[str, "ABCView"]
     state_dispenser: ABCStateDispenser
+    error_handler: ABCErrorHandler
 
     @abstractmethod
     async def route(self, event: dict, api: "ABCAPI") -> typing.Any:
@@ -16,7 +18,10 @@ class ABCRouter(ABC):
 
     @abstractmethod
     def construct(
-            self, views: typing.Dict[str, "ABCView"], state_dispenser: ABCStateDispenser
+            self,
+            views: typing.Dict[str, "ABCView"],
+            state_dispenser: ABCStateDispenser,
+            error_handler: ABCErrorHandler,
     ) -> "ABCRouter":
         pass
 
