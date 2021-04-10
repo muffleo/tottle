@@ -26,9 +26,9 @@ class Poll(BaseModel):
     is_anonymous: bool
     type: str
     allows_multiple_answers: bool
-    correct_option_id: Optional[int] = 0
-    explanation: Optional[str] = ""
-    explanation_entities: Optional[List[Entity]] = []
-    open_period: Optional[int] = 0
-    close_date: Optional[int] = 0
+    correct_option_id: Optional[int] = None
+    explanation: Optional[str] = None
+    explanation_entities: Optional[List[Entity]] = None
+    open_period: Optional[int] = None
+    close_date: Optional[int] = None
 

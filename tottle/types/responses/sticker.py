@@ -9,7 +9,7 @@ from tottle.types.responses.photo import PhotoSize
 class Sticker(BaseModel):
     file_id: str
     file_unique_id: str
-    file_size: Optional[int] = 0
+    file_size: Optional[int] = None
 
     width: int
     height: int

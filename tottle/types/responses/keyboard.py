@@ -1,5 +1,5 @@
+from typing import Optional, List
 from abc import ABC, abstractmethod
-from typing import List, Optional
 
 from pydantic import BaseModel
 
@@ -29,25 +29,26 @@ class KeyboardButton(BaseModel):
     text: str
     request_contact: Optional[bool] = False
     request_location: Optional[bool] = False
+    request_poll: Optional[KeyboardButtonPollType] = None
 
 
 class InlineKeyboardButton(BaseModel):
     text: str
-    url: Optional[str] = ""
+    url: Optional[str] = None
     login_url: Optional[LoginUrl] = None
 
     pay: Optional[bool] = None
 
-    callback_data: Optional[str] = ""
+    callback_data: Optional[str] = None
     callback_game: Optional[CallbackGame] = None
 
-    switch_inline_query: Optional[str] = ""
-    switch_inline_query_current_chat: Optional[str] = ""
+    switch_inline_query: Optional[str] = None
+    switch_inline_query_current_chat: Optional[str] = None
 
 
 class ReplyKeyboardRemove(BaseModel):
     remove_keyboard: bool = True
-    selective: Optional[bool] = False
+    selective: Optional[bool] = None
 
 
 class ReplyKeyboardMarkup(AbstractMarkup):
@@ -122,4 +123,3 @@ class InlineKeyboardMarkup(AbstractMarkup):
             self.add_buttons(button)
 
         return self
-

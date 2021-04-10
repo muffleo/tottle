@@ -13,7 +13,7 @@ class ShippingAddress(BaseModel):
 
 
 class OrderInfo(BaseModel):
-    name: Optional[str] = ""
-    phone_number: Optional[str] = ""
-    email: Optional[str] = ""
+    name: Optional[str] = None
+    phone_number: Optional[str] = None
+    email: Optional[str] = None
     shipping_address: Optional[ShippingAddress] = None
