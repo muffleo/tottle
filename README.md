@@ -7,13 +7,16 @@
 <h1 align="center">Tottle — fast, flexible and flawless Telegram API wrapper</h1>
    
 ## How to install
-At the moment `tottle` is only available for download directly from GitHub:
+At the moment `tottle` is only available to be downloaded directly from GitHub:
 
 `pip install -U https://github.com/tottle-project/tottle-python/archive/master.zip`
 
 ## Getting started
+
 ### Longpoll
-This is the fastest way to launch a bot. Here is an example:
+
+This is the fastest way to launch bot. Here is the example:
+
 ```python
 from tottle import Bot
 
@@ -25,12 +28,15 @@ async def message_handler(_) -> str:
 
 bot.run_forever()
 ```
-In this example, the bot replies to all messages in any chat. You can also specify a pattern for text match (or even give it a [vbml](https://github.com/tesseradecade/vbml) pattern). For more examples visit [examples](./examples) directory.
+
+In this example, bot replies to all messages in any chat. You can also specify a pattern for text matching (or even give it a [vbml](https://github.com/tesseradecade/vbml) pattern). For more examples visit [examples](./examples) directory.
+
 ### Callback
-The example is not ready yet, but you can actually implement handling of Callback API updates via `bot.router.route(event: dict, api: API)` method. The implementation depends on the web framework you are using.
+
+This example is not ready yet, but you can actually implement handling of Callback API updates via `bot.router.route(event: dict, api: API)` method. The implementation depends on what web framework you use.
 
 ## Using
- - Heavily based on [vkbottle](https://github.com/timoniq/vkbottle)
+ - Inspired and based (all architectural signatures) on [vkbottle](https://github.com/timoniq/vkbottle)
  - Powered by [aiohttp](https://github.com/aio-libs/aiohttp)
  - Response models built with [pydantic](https://github.com/samuelcolvin/pydantic)
  - Text validation is implemented through [vbml](https://github.com/tesseradecade/vbml)
