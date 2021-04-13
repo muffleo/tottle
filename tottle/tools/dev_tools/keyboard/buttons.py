@@ -11,7 +11,7 @@ class Button:
         text: str,
         request_contact: Optional[bool] = False,
         request_location: Optional[bool] = False,
-        request_poll: Optional[KeyboardButtonPollType] = None
+        request_poll: Optional[KeyboardButtonPollType] = None,
     ):
         self.text = text
         self.request_contact = request_contact

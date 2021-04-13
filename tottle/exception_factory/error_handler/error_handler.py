@@ -29,7 +29,8 @@ class ErrorHandler(ABCErrorHandler):
         return decorator
 
     def register_undefined_error_handler(
-        self, undefined_error_handler: typing.Optional[ExceptionHandler] = None,
+        self,
+        undefined_error_handler: typing.Optional[ExceptionHandler] = None,
     ) -> typing.Optional[typing.Callable[[ExceptionHandler], typing.Any]]:
 
         if undefined_error_handler:
@@ -56,7 +57,8 @@ class ErrorHandler(ABCErrorHandler):
     def wraps_error_handler(
         self,
     ) -> typing.Callable[
-        [typing.Any], typing.Callable[[typing.Any, typing.Any], typing.Awaitable[typing.Any]]
+        [typing.Any],
+        typing.Callable[[typing.Any, typing.Any], typing.Awaitable[typing.Any]],
     ]:
         def decorator(func: typing.Union[typing.NoReturn, typing.Any]):
             async def wrapper(*args, **kwargs):
@@ -75,7 +77,9 @@ class ErrorHandler(ABCErrorHandler):
                 self.error_handlers[e.__class__.__name__], e, *args, **kwargs
             )
         elif self.undefined_error_handler:
-            return await self.call_handler(self.undefined_error_handler, e, *args, **kwargs)
+            return await self.call_handler(
+                self.undefined_error_handler, e, *args, **kwargs
+            )
         logger.error("\n" + traceback.format_exc())
 
     @property

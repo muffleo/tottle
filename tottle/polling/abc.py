@@ -25,8 +25,6 @@ class ABCPolling(ABC):
 
     @abstractmethod
     def construct(
-            self,
-            api: "ABCAPI",
-            error_handler: Optional["ABCErrorHandler"] = None
+        self, api: "ABCAPI", error_handler: Optional["ABCErrorHandler"] = None
     ) -> "ABCPolling":
         pass

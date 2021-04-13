@@ -13,6 +13,7 @@ from asyncio import AbstractEventLoop, get_event_loop, set_event_loop_policy
 
 try:
     import uvloop
+
     set_event_loop_policy(uvloop.EventLoopPolicy())
 except ImportError:
     ...
@@ -20,17 +21,17 @@ except ImportError:
 
 class Bot(ABCFramework):
     def __init__(
-            self,
-            token: Optional[str] = None,
-            api: Optional[ABCAPI] = None,
-            polling: Optional[ABCPolling] = None,
-            router: Optional["ABCRouter"] = None,
-            labeler: Optional["ABCBotLabeler"] = None,
-            loop: Optional[AbstractEventLoop] = None,
-            loop_wrapper: Optional[LoopWrapper] = None,
-            custom_logger: Optional[Logger] = None,
-            task_each_event: bool = False,
-            error_handler: Optional["ABCErrorHandler"] = None,
+        self,
+        token: Optional[str] = None,
+        api: Optional[ABCAPI] = None,
+        polling: Optional[ABCPolling] = None,
+        router: Optional["ABCRouter"] = None,
+        labeler: Optional["ABCBotLabeler"] = None,
+        loop: Optional[AbstractEventLoop] = None,
+        loop_wrapper: Optional[LoopWrapper] = None,
+        custom_logger: Optional[Logger] = None,
+        task_each_event: bool = False,
+        error_handler: Optional["ABCErrorHandler"] = None,
     ):
         self.api: "API" = API(token) if token else api
         self.apis: Optional[Iterable["ABCAPI"]] = None
@@ -46,9 +47,7 @@ class Bot(ABCFramework):
         (custom_logger or default_logger).setup()
 
     async def run_polling(
-            self,
-            custom_polling: Optional[ABCPolling] = None,
-            apis_count: int = 0
+        self, custom_polling: Optional[ABCPolling] = None, apis_count: int = 0
     ) -> NoReturn:
         polling = custom_polling or self.polling
         logger.info("Polling will be started!")
@@ -64,7 +63,11 @@ class Bot(ABCFramework):
             else:
                 self.loop.create_task(self.router.route(update, self.api))
 
-    def run_forever(self, on_startup: Optional[Callable] = None, on_shutdown: Optional[Callable] = None):
+    def run_forever(
+        self,
+        on_startup: Optional[Callable] = None,
+        on_shutdown: Optional[Callable] = None,
+    ):
         lw = LoopWrapper(on_startup=on_startup, on_shutdown=on_shutdown)
         lw.add_task(self.run_polling())
         lw.run_forever()

@@ -32,7 +32,7 @@ class Keyboard(AbstractMarkup):
         self,
         resize_keyboard: bool = False,
         one_time_keyboard: bool = False,
-        selective: Optional[bool] = None
+        selective: Optional[bool] = None,
     ):
         self.keyboard = [[]]
         self.resize_keyboard = resize_keyboard

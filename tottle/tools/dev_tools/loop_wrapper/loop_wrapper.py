@@ -31,10 +31,7 @@ class LoopWrapper:
             logger.warning("You ran loop with 0 tasks. Is it ok?")
 
         try:
-            [
-                loop.run_until_complete(startup_task)
-                for startup_task in self.on_startup
-            ]
+            [loop.run_until_complete(startup_task) for startup_task in self.on_startup]
 
             if self.auto_reload:
                 loop.create_task(watch_to_reload(self.auto_reload_dir))
@@ -63,9 +60,9 @@ class LoopWrapper:
             raise TypeError("Task should be coroutine or coroutine function")
 
     def interval(
-            self, seconds: int = 0, minutes: int = 0, hours: int = 0, days: int = 0
+        self, seconds: int = 0, minutes: int = 0, hours: int = 0, days: int = 0
     ) -> Callable[[Callable], Callable]:
-        """ A tiny template to wrap repeated tasks with decorator
+        """A tiny template to wrap repeated tasks with decorator
         >>> lw = LoopWrapper()
         >>> @lw.interval(seconds=5)
         >>> async def repeated_function():
@@ -84,9 +81,9 @@ class LoopWrapper:
         return decorator
 
     def timer(
-            self, seconds: int = 0, minutes: int = 0, hours: int = 0, days: int = 0
+        self, seconds: int = 0, minutes: int = 0, hours: int = 0, days: int = 0
     ) -> Callable[[Callable], Callable]:
-        """ A tiny template to wrap tasks with timer
+        """A tiny template to wrap tasks with timer
         >>> lw = LoopWrapper()
         >>> @lw.timer(seconds=5)
         >>> async def delayed_function():

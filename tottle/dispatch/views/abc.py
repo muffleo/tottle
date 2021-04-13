@@ -19,7 +19,7 @@ class ABCView(ABC):
 
     @abstractmethod
     async def handler(
-            self, event: dict, api: API, state_dispenser: "ABCStateDispenser"
+        self, event: dict, api: API, state_dispenser: "ABCStateDispenser"
     ) -> typing.Any:
         pass
 

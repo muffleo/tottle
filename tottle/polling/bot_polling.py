@@ -7,10 +7,10 @@ from tottle.exception_factory import ABCErrorHandler, ErrorHandler
 
 class BotPolling(ABCPolling):
     def __init__(
-            self,
-            api: Optional[ABCAPI] = None,
-            offset: Optional[int] = None,
-            error_handler: Optional[ABCErrorHandler] = None,
+        self,
+        api: Optional[ABCAPI] = None,
+        offset: Optional[int] = None,
+        error_handler: Optional[ABCErrorHandler] = None,
     ):
         self._api = api
         self.error_handler = error_handler or ErrorHandler()
@@ -18,11 +18,7 @@ class BotPolling(ABCPolling):
         self.stop: bool = False
 
     async def get_updates(self) -> Optional[List[dict]]:
-        raw_updates = await self.api.request(
-            "getUpdates", {
-                "offset": self.offset
-            }
-        )
+        raw_updates = await self.api.request("getUpdates", {"offset": self.offset})
 
         return raw_updates
 
@@ -39,9 +35,7 @@ class BotPolling(ABCPolling):
                 await self.error_handler.handle(e)
 
     def construct(
-            self,
-            api: "ABCAPI",
-            error_handler: Optional["ABCErrorHandler"] = None
+        self, api: "ABCAPI", error_handler: Optional["ABCErrorHandler"] = None
     ) -> "BotPolling":
         self._api = api
 

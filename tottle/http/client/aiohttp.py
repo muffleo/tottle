@@ -9,11 +9,11 @@ from .abc import ABCHTTPClient
 
 class AiohttpClient(ABCHTTPClient):
     def __init__(
-            self,
-            loop: typing.Optional[asyncio.AbstractEventLoop] = None,
-            session: typing.Optional[ClientSession] = None,
-            *args,
-            **kwargs
+        self,
+        loop: typing.Optional[asyncio.AbstractEventLoop] = None,
+        session: typing.Optional[ClientSession] = None,
+        *args,
+        **kwargs
     ):
         super().__init__(*args, **kwargs)
         self.loop = loop or asyncio.get_event_loop()
@@ -23,19 +23,19 @@ class AiohttpClient(ABCHTTPClient):
         )
 
     async def request_json(
-            self, method: str, url: str, data: typing.Optional[dict] = None, **kwargs
+        self, method: str, url: str, data: typing.Optional[dict] = None, **kwargs
     ) -> dict:
         async with self.session.request(method, url, data=data, **kwargs) as response:
             return await response.json(loads=json.loads)
 
     async def request_text(
-            self, method: str, url: str, data: typing.Optional[dict] = None, **kwargs
+        self, method: str, url: str, data: typing.Optional[dict] = None, **kwargs
     ) -> str:
         async with self.session.request(method, url, data=data, **kwargs) as response:
             return await response.text()
 
     async def request_content(
-            self, method: str, url: str, data: typing.Optional[dict] = None, **kwargs
+        self, method: str, url: str, data: typing.Optional[dict] = None, **kwargs
     ) -> bytes:
         async with self.session.request(method, url, data=data, **kwargs) as response:
             return await response.content.read()

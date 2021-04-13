@@ -18,7 +18,8 @@ class ABCErrorHandler(ABC):
 
     @abstractmethod
     def register_undefined_error_handler(
-        self, exception_handler: typing.Optional[ExceptionHandler] = None,
+        self,
+        exception_handler: typing.Optional[ExceptionHandler] = None,
     ) -> typing.Optional[typing.Callable[[ExceptionHandler], typing.Any]]:
         pass
 
@@ -30,7 +31,8 @@ class ABCErrorHandler(ABC):
     def wraps_error_handler(
         self,
     ) -> typing.Callable[
-        [typing.Any], typing.Callable[[typing.Any, typing.Any], typing.Awaitable[typing.Any]]
+        [typing.Any],
+        typing.Callable[[typing.Any, typing.Any], typing.Awaitable[typing.Any]],
     ]:
         pass
 

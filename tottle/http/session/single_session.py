@@ -6,7 +6,9 @@ from .abc import ABCSessionManager
 
 
 class SingleSessionManager(ABCSessionManager):
-    def __init__(self, http_client: typing.Optional[typing.Type[ABCHTTPClient]] = None, **kwargs):
+    def __init__(
+        self, http_client: typing.Optional[typing.Type[ABCHTTPClient]] = None, **kwargs
+    ):
         self.http_client: typing.Type[ABCHTTPClient] = http_client or AiohttpClient
         self.http_client_settings = kwargs
         self._session: typing.Optional[ABCHTTPClient] = None

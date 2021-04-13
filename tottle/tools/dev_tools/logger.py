@@ -16,12 +16,12 @@ class LoggerLevel:
 
 class Logger:
     def __init__(
-            self,
-            format: str,
-            enqueue: bool = True,
-            levels: Optional[Iterable[dict]] = None,
-            current_level: Optional[LoggerLevel] = None,
-            sink: Optional[Union[TextIO, Callable[[Message], None], Handler]] = None,
+        self,
+        format: str,
+        enqueue: bool = True,
+        levels: Optional[Iterable[dict]] = None,
+        current_level: Optional[LoggerLevel] = None,
+        sink: Optional[Union[TextIO, Callable[[Message], None], Handler]] = None,
     ):
         self.format = format
         self.enqueue = enqueue
@@ -46,13 +46,13 @@ class Logger:
 
 
 default_logger = Logger(
-        format="<level>Tottle / {message}</level>"
-               " [at <light-blue><bold>{time:HH:MM:ss}</bold></light-blue>]",
-        levels=[
-            {"INFO": {"color": "<blue>"}},
-            {"SUCCESS": {"color": "<green>"}},
-            {"WARNING": {"color": "<yellow>"}},
-            {"ERROR": {"color": "<red>"}},
-            {"DEBUG": {"color": "<white>"}}
-        ]
-    )
+    format="<level>Tottle / {message}</level>"
+    " [at <light-blue><bold>{time:HH:MM:ss}</bold></light-blue>]",
+    levels=[
+        {"INFO": {"color": "<blue>"}},
+        {"SUCCESS": {"color": "<green>"}},
+        {"WARNING": {"color": "<yellow>"}},
+        {"ERROR": {"color": "<red>"}},
+        {"DEBUG": {"color": "<white>"}},
+    ],
+)

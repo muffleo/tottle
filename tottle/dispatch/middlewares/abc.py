@@ -17,7 +17,7 @@ class BaseMiddleware(ABC):
         event,
         view: "ABCView",
         handle_responses: List[Any],
-        handlers: List["ABCHandler"]
+        handlers: List["ABCHandler"],
     ):
         ...
 

@@ -30,7 +30,7 @@ class MessageView(ABCView):
         return event["message"]["from"].get(self.state_source_key)
 
     async def handler(
-            self, event: dict, api: API, state_dispenser: "ABCStateDispenser"
+        self, event: dict, api: API, state_dispenser: "ABCStateDispenser"
     ) -> Any:
         logger.debug("Handling update {} with message view", event.get("update_id"))
 
@@ -65,7 +65,10 @@ class MessageView(ABCView):
 
             if return_handler is not None:
                 await return_handler(
-                    self.handler_return_manager, handler_response, message, context_variables
+                    self.handler_return_manager,
+                    handler_response,
+                    message,
+                    context_variables,
                 )
 
             if handler.blocking:

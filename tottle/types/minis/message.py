@@ -14,12 +14,12 @@ class MessageMini(Message):
         return getattr(self, "ctx_api")
 
     async def answer(
-            self,
-            text: str,
-            parse_mode: typing.Optional[str] = None,
-            disable_web_page_preview: typing.Optional[bool] = None,
-            disable_notification: typing.Optional[bool] = None,
-            reply_markup: typing.Optional[dict] = None,
+        self,
+        text: str,
+        parse_mode: typing.Optional[str] = None,
+        disable_web_page_preview: typing.Optional[bool] = None,
+        disable_notification: typing.Optional[bool] = None,
+        reply_markup: typing.Optional[dict] = None,
     ) -> Message:
         params = {k: v for k, v in locals().items() if k != "self" and v is not None}
         params["chat_id"] = self.chat.id
@@ -27,12 +27,12 @@ class MessageMini(Message):
         return await self.api.messages.send_message(**params)
 
     async def reply(
-            self,
-            text: str,
-            parse_mode: typing.Optional[str] = None,
-            disable_web_page_preview: typing.Optional[bool] = None,
-            disable_notification: typing.Optional[bool] = None,
-            reply_markup: typing.Optional[dict] = None,
+        self,
+        text: str,
+        parse_mode: typing.Optional[str] = None,
+        disable_web_page_preview: typing.Optional[bool] = None,
+        disable_notification: typing.Optional[bool] = None,
+        reply_markup: typing.Optional[dict] = None,
     ) -> Message:
         params = {k: v for k, v in locals().items() if k != "self" and v is not None}
         params["chat_id"] = self.chat.id
@@ -41,9 +41,9 @@ class MessageMini(Message):
         return await self.api.messages.send_message(**params)
 
     async def forward(
-            self,
-            chat_id: typing.Union[int, str],
-            disable_notification: typing.Optional[bool] = None,
+        self,
+        chat_id: typing.Union[int, str],
+        disable_notification: typing.Optional[bool] = None,
     ) -> Message:
         params = {k: v for k, v in locals().items() if k != "self" and v is not None}
         params["from_chat_id"] = self.chat.id

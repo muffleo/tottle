@@ -9,8 +9,8 @@ class ABCAPI(ABC):
 
     @abstractmethod
     async def request(
-            self,
-            method: str,
-            data: typing.Optional[dict] = None,
+        self,
+        method: str,
+        data: typing.Optional[dict] = None,
     ) -> typing.Optional[typing.Any]:
         pass

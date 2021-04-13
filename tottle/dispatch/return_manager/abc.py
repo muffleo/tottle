@@ -13,7 +13,9 @@ class BaseReturnManager(ABC):
                 return handler
 
     @property
-    def handlers(self) -> Dict[Union[type, Tuple[type, ...]], Callable[[Any], Coroutine]]:
+    def handlers(
+        self,
+    ) -> Dict[Union[type, Tuple[type, ...]], Callable[[Any], Coroutine]]:
         handlers = {}
         for k, v in vars(self.__class__).items():
             if not isinstance(v, HandlerProperty):

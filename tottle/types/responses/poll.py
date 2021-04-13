@@ -31,4 +31,3 @@ class Poll(BaseModel):
     explanation_entities: Optional[List[Entity]] = None
     open_period: Optional[int] = None
     close_date: Optional[int] = None
-

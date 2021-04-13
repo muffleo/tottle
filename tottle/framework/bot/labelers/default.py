@@ -2,9 +2,13 @@ from tottle.framework.bot.labelers import ABCBotLabeler, LabeledMessageHandler
 from tottle.dispatch.handlers import FunctionHandler
 from tottle.dispatch.rules import ABCRule
 from tottle.dispatch.rules.bot import (
-    PeerRule, MatchRule, StateRule,
-    RegexRule, LevensteinRule, MessageLengthRule,
-    CommandRule
+    PeerRule,
+    MatchRule,
+    StateRule,
+    RegexRule,
+    LevensteinRule,
+    MessageLengthRule,
+    CommandRule,
 )
 from tottle.dispatch.views import ABCView, MessageView
 
@@ -20,7 +24,7 @@ DEFAULT_CUSTOM_RULES: Dict[str, Type[ABCRule]] = {
     "levenstein": LevensteinRule,
     "lev": LevensteinRule,
     "from_chat": PeerRule,
-    "length": MessageLengthRule
+    "length": MessageLengthRule,
 }
 
 
@@ -31,7 +35,7 @@ class BotLabeler(ABCBotLabeler):
         self.custom_rules = kwargs.get("custom_rules") or DEFAULT_CUSTOM_RULES
         self.rule_config: Dict[str, Any] = {
             "vbml_flags": re.MULTILINE,
-            "vbml_patcher": vbml.Patcher()
+            "vbml_patcher": vbml.Patcher(),
         }
 
     @property
@@ -41,8 +45,7 @@ class BotLabeler(ABCBotLabeler):
 
     @vbml_ignore_case.setter
     def vbml_ignore_case(self, ignore_case: bool):
-        """ Adds ignore case flag to rule config flags or removes it
-        """
+        """Adds ignore case flag to rule config flags or removes it"""
         if not ignore_case:
             self.rule_config["vbml_flags"] ^= re.IGNORECASE
         else:
@@ -64,9 +67,7 @@ class BotLabeler(ABCBotLabeler):
     def vbml_flags(self, flags: re.RegexFlag):
         self.rule_config["vbml_flags"] = flags
 
-    def message(
-            self, *rules: "ABCRule", **custom_rules
-    ) -> LabeledMessageHandler:
+    def message(self, *rules: "ABCRule", **custom_rules) -> LabeledMessageHandler:
         def decorator(func):
             self.message_view.handlers.append(
                 FunctionHandler(
@@ -79,9 +80,7 @@ class BotLabeler(ABCBotLabeler):
 
         return decorator
 
-    def chat_message(
-            self, *rules: "ABCRule", **custom_rules
-    ) -> LabeledMessageHandler:
+    def chat_message(self, *rules: "ABCRule", **custom_rules) -> LabeledMessageHandler:
         def decorator(func):
             self.message_view.handlers.append(
                 FunctionHandler(
@@ -96,7 +95,7 @@ class BotLabeler(ABCBotLabeler):
         return decorator
 
     def private_message(
-            self, *rules: "ABCRule", **custom_rules
+        self, *rules: "ABCRule", **custom_rules
     ) -> LabeledMessageHandler:
         def decorator(func):
             self.message_view.handlers.append(

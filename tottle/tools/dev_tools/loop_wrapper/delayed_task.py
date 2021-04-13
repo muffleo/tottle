@@ -5,11 +5,7 @@ Handler = Callable[..., Coroutine[Any, Any, Any]]
 
 
 async def delayed_task(
-        seconds: int,
-        handler: Handler,
-        do_break: bool = False,
-        *args,
-        **kwargs
+    seconds: int, handler: Handler, do_break: bool = False, *args, **kwargs
 ):
     while True:
         await sleep(seconds)

@@ -6,17 +6,20 @@ from .abc import ABCExceptionFactory
 
 class CodeErrorFactory(ABCExceptionFactory):
     def __init__(
-        self, code: typing.Optional[int] = None, error_description: typing.Optional[str] = None
+        self,
+        code: typing.Optional[int] = None,
+        error_description: typing.Optional[str] = None,
     ):
         self.code = code
         self.error_description = error_description
 
     @classmethod
     def __call__(  # type: ignore
-        cls, code: typing.Optional[int] = None, error_description: typing.Optional[str] = None
+        cls,
+        code: typing.Optional[int] = None,
+        error_description: typing.Optional[str] = None,
     ) -> typing.Union["ABCExceptionFactory", typing.Type["ABCExceptionFactory"]]:
-        """ Interactively chooses the factory was called for: if error_description
-        """
+        """Interactively chooses the factory was called for: if error_description"""
         if error_description is not None:
             return cls.exception_to_raise(code, error_description)  # type: ignore
         return cls.exception_to_handle(code)
@@ -25,8 +28,7 @@ class CodeErrorFactory(ABCExceptionFactory):
     def exception_to_raise(  # type: ignore
         cls, code: int, error_description: str
     ) -> "ABCExceptionFactory":
-        """ Returns an error with error code and error_description
-        """
+        """Returns an error with error code and error_description"""
         exception_type = type(cls.generate_exc_classname(code), (cls,), {})
         return exception_type(code, error_description)
 
@@ -34,8 +36,8 @@ class CodeErrorFactory(ABCExceptionFactory):
     def exception_to_handle(  # type: ignore
         cls, code: typing.Optional[int] = None
     ) -> typing.Type["ABCExceptionFactory"]:
-        """ Returns error type from garbage compiler storage with error code.
-        If code is not specified returns self type to handle exception with any code """
+        """Returns error type from garbage compiler storage with error code.
+        If code is not specified returns self type to handle exception with any code"""
         if code is None:
             return cls
 

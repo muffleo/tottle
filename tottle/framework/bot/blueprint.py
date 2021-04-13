@@ -11,10 +11,10 @@ from typing import Optional
 
 class BotBlueprint(ABCBlueprint):
     def __init__(
-            self,
-            name: Optional[str] = None,
-            labeler: Optional[BotLabeler] = None,
-            router: Optional[BotRouter] = None,
+        self,
+        name: Optional[str] = None,
+        labeler: Optional[BotLabeler] = None,
+        router: Optional[BotRouter] = None,
     ):
         if name is not None:
             self.name = name

@@ -12,7 +12,9 @@ class BotMessageReturnHandler(BaseReturnManager):
         await message.answer(value)
 
     @BaseReturnManager.instance_of((tuple, list))
-    async def iter_handler(self, value: Union[tuple, list], message: "MessageMini", _: dict):
+    async def iter_handler(
+        self, value: Union[tuple, list], message: "MessageMini", _: dict
+    ):
         [await message.answer(str(e)) for e in value]
 
     @BaseReturnManager.instance_of(dict)

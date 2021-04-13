@@ -85,7 +85,9 @@ class MatchRule(ABCMessageRule):
         flags = flags or self.config.get("vbml_flags")
 
         if isinstance(pattern, str):
-            pattern = [vbml.Pattern(pattern, flags=flags or self.config.get("vbml_flags"))]
+            pattern = [
+                vbml.Pattern(pattern, flags=flags or self.config.get("vbml_flags"))
+            ]
         elif isinstance(pattern, vbml.Pattern):
             pattern = [pattern]
         elif isinstance(pattern, list):
@@ -108,7 +110,9 @@ class MatchRule(ABCMessageRule):
 
 
 class RegexRule(ABCMessageRule):
-    def __init__(self, regexp: Union[str, List[str], typing.Pattern, List[typing.Pattern]]):
+    def __init__(
+        self, regexp: Union[str, List[str], typing.Pattern, List[typing.Pattern]]
+    ):
         if isinstance(regexp, typing.Pattern):
             regexp = [regexp]
         elif isinstance(regexp, str):
