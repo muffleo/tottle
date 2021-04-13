@@ -15,9 +15,9 @@ At the moment `tottle` is only available for download directly from GitHub:
 ### Longpoll
 This is the fastest way to launch a bot. Here is an example:
 ```python
-from tottle import Bot, Message
+from tottle import Bot
 
-bot = Bot("token-here")
+bot = Bot("token")
 
 @bot.on.message()
 async def message_handler(_) -> str:
