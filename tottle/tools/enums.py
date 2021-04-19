@@ -1,4 +1,7 @@
-class EventType:
+import enum
+
+
+class EventType(enum.Enum):
     MESSAGE = "message"
     EDITED_MESSAGE = "edited_message"
 

@@ -1,4 +1,4 @@
-from tottle.framework.bot.labelers import ABCBotLabeler, LabeledMessageHandler
+from .abc import ABCBotLabeler, LabeledMessageHandler, LabeledHandler
 from tottle.dispatch.handlers import FunctionHandler
 from tottle.dispatch.rules import ABCRule
 from tottle.dispatch.rules.bot import (
@@ -10,11 +10,12 @@ from tottle.dispatch.rules.bot import (
     MessageLengthRule,
     CommandRule,
 )
-from tottle.dispatch.views import ABCView, MessageView
+from tottle.dispatch.views import ABCView, MessageView, RawEventView, HandlerBasement
+from tottle.tools.enums import EventType
 
 import re
 import vbml
-from typing import Dict, Type, Any, List
+from typing import Dict, Type, Any, List, Callable
 
 DEFAULT_CUSTOM_RULES: Dict[str, Type[ABCRule]] = {
     "text": MatchRule,
@@ -31,7 +32,7 @@ DEFAULT_CUSTOM_RULES: Dict[str, Type[ABCRule]] = {
 class BotLabeler(ABCBotLabeler):
     def __init__(self, **kwargs):
         self.message_view = MessageView()
-
+        self.raw_event_view = RawEventView()
         self.custom_rules = kwargs.get("custom_rules") or DEFAULT_CUSTOM_RULES
         self.rule_config: Dict[str, Any] = {
             "vbml_flags": re.MULTILINE,
@@ -110,12 +111,38 @@ class BotLabeler(ABCBotLabeler):
 
         return decorator
 
+    def raw_event(
+            self,
+            event: EventType,
+            dataclass: Callable = dict,
+            *rules,
+            **custom_rules,
+    ) -> LabeledHandler:
+        if not isinstance(event, list):
+            event = [event]
+
+        def decorator(func):
+            for e in event:
+                self.raw_event_view.handlers[e.value] = HandlerBasement(
+                    dataclass,
+                    FunctionHandler(
+                        func,
+                        *rules,
+                        *self.get_custom_rules(custom_rules),
+                    ),
+                )
+            return func
+
+        return decorator
+
     def load(self, labeler: "BotLabeler"):
         self.message_view.handlers.extend(labeler.message_view.handlers)
         self.message_view.middlewares.extend(labeler.message_view.middlewares)
+        self.raw_event_view.handlers.update(labeler.raw_event_view.handlers)
+        self.raw_event_view.middlewares.extend(labeler.raw_event_view.middlewares)
 
     def get_custom_rules(self, custom_rules: Dict[str, Any]) -> List["ABCRule"]:
         return [self.custom_rules[k].with_config(self.rule_config)(v) for k, v in custom_rules.items()]  # type: ignore
 
     def views(self) -> Dict[str, "ABCView"]:
-        return {"message": self.message_view}
+        return {"message": self.message_view, "raw": self.raw_event_view}

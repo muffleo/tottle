@@ -2,7 +2,7 @@ from .delayed_task import delayed_task
 from .auto_reload import watch_to_reload
 
 from asyncio import AbstractEventLoop, get_event_loop, iscoroutine, iscoroutinefunction
-from typing import Optional, List, Coroutine, Any, Union, Callable
+from typing import Optional, List, Coroutine, Any, Union, Callable, Iterable
 from loguru import logger
 
 Task = Coroutine[Any, Any, Any]
@@ -29,6 +29,9 @@ class LoopWrapper:
 
         if not len(self.tasks):
             logger.warning("You ran loop with 0 tasks. Is it ok?")
+
+        if not isinstance(self.on_startup, Iterable):
+            self.on_startup = tuple(self.on_startup)
 
         try:
             [loop.run_until_complete(startup_task) for startup_task in self.on_startup]

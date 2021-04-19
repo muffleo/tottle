@@ -24,7 +24,7 @@ class MessageView(ABCView):
         self.handler_return_manager = BotMessageReturnHandler()
 
     async def processor(self, event: dict) -> bool:
-        return bool(event.get(EventType.MESSAGE))
+        return bool(event.get(EventType.MESSAGE.value))
 
     def get_state_key(self, event: dict) -> Optional[int]:
         return event["message"]["from"].get(self.state_source_key)
