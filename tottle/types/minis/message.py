@@ -16,13 +16,14 @@ class MessageMini(Message):
     async def answer(
         self,
         text: str,
+        chat_id: typing.Optional[int] = None,
         parse_mode: typing.Optional[str] = None,
         disable_web_page_preview: typing.Optional[bool] = None,
         disable_notification: typing.Optional[bool] = None,
         reply_markup: typing.Optional[dict] = None,
     ) -> Message:
         params = {k: v for k, v in locals().items() if k != "self" and v is not None}
-        params["chat_id"] = self.chat.id
+        params["chat_id"] = chat_id or self.chat.id
 
         return await self.api.messages.send_message(**params)
 
