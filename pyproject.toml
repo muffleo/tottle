@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "tottle"
-version = "0.3"
+version = "1.0"
 description = "Tottle — fast, flexible and flawless Telegram API wrapper"
 authors = ["exthrempty"]
 license = "MIT"
