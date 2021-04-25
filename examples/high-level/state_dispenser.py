@@ -9,7 +9,8 @@ class ProfileState(BaseStateGroup):
     AGE = 1
 
 
-# <state = None> (default) handles all events with no state;
+# <state=None> (default) handles all events with no state;
+# <state="*"> handles all events with and without state
 # you can add StateRule to auto_rules in blueprint for example
 @bot.on.message(text="Hello", state=None)
 async def greeting(message: Message):

@@ -142,6 +142,11 @@ class BotLabeler(ABCBotLabeler):
         self.raw_event_view.middlewares.extend(labeler.raw_event_view.middlewares)
 
     def get_custom_rules(self, custom_rules: Dict[str, Any]) -> List["ABCRule"]:
+        if not custom_rules.get("state"):
+            custom_rules["state"] = None
+        elif custom_rules.get("state") == "*":
+            custom_rules.pop("state")
+
         return [self.custom_rules[k].with_config(self.rule_config)(v) for k, v in custom_rules.items()]  # type: ignore
 
     def views(self) -> Dict[str, "ABCView"]:
