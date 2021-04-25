@@ -31,7 +31,7 @@ class LoopWrapper:
             logger.warning("You ran loop with 0 tasks. Is it ok?")
 
         if not isinstance(self.on_startup, Iterable):
-            self.on_startup = tuple(self.on_startup)
+            self.on_startup = list(self.on_startup)
 
         try:
             [loop.run_until_complete(startup_task) for startup_task in self.on_startup]
