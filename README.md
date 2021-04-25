@@ -5,11 +5,17 @@
 </p>
  
 <h1 align="center">Tottle — fast, flexible and flawless Telegram API wrapper</h1>
-   
-## How to install
-At the moment `tottle` is only available to be downloaded directly from GitHub:
 
-`pip install -U https://github.com/tottle-project/tottle-python/archive/master.zip`
+## How to install
+1) Installing the stable version of tottle is as easy as:
+    ```shell script
+    pip install -U tottle
+    ```
+
+2) If you want to install the latest version, you can do:
+    ```shell script
+   pip install -U https://github.com/tottle-project/tottle-python/archive/master.zip
+   ```
 
 ## Getting started
 

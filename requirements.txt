@@ -1,6 +1,0 @@
-typing-extensions
-pydantic
-aiohttp
-loguru
-vbml
-watchgod
